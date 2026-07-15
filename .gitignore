@@ -15,6 +15,7 @@ release
 *.local
 soop-chat-collector
 soop-chat-collector.json
+assets
 
 # Editor directories and files
 .vscode/*
