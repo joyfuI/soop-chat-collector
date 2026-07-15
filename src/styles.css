@@ -1,0 +1,9 @@
+.animation-reset,
+.animation-reset *,
+.animation-reset::before,
+.animation-reset::after,
+.animation-reset *::before,
+.animation-reset *::after {
+  /* biome-ignore lint/complexity/noImportantStyles: 유틸성 클래스 */
+  animation: none !important;
+}
