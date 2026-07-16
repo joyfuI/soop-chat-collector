@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import type { DotPath, DotPathValue, StoreType } from '../types';
+import type { StoreType } from '../../shared/storeSchema';
+import type { DotPath, DotPathValue } from '../../shared/types';
 import fetchBase from '../utils/fetchBase';
 import fetchJson from '../utils/fetchJson';
 

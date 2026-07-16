@@ -1,7 +1,10 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
-import type { OverlayKey, PostOverlayControlResponse } from '../types';
+import type {
+  OverlayKey,
+  PostOverlayControlResponse,
+} from '../../shared/types';
 import { setOverlayControlQueryData } from './useOverlayQuery';
 
 const useOverlaySSE = (key: OverlayKey) => {

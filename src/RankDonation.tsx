@@ -19,9 +19,9 @@ import RankDonationOverlay from './RankDonationOverlay';
 import copyText from './utils/copyText';
 
 const RankDonation = () => {
-  const [limit, setLimit] = useStore('rankDonation.limit', 5);
-  const [viewCount, setViewCount] = useStore('rankDonation.viewCount', false);
-  const [style, setStyle] = useStore('rankDonation.style', '');
+  const [limit, setLimit] = useStore('rankDonation.limit');
+  const [viewCount, setViewCount] = useStore('rankDonation.viewCount');
+  const [style, setStyle] = useStore('rankDonation.style');
   const prevOptions = useRef({ limit, viewCount, style });
 
   const key = 'rank-donation';

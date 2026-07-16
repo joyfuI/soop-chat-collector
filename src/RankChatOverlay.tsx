@@ -7,10 +7,10 @@ import useOverlaySSE from './hooks/useOverlaySSE';
 import useStore from './hooks/useStore';
 
 const RankChatOverlay = () => {
-  const [streamerId] = useStore('streamerId', '');
-  const [limit] = useStore('rankChat.limit', 50);
-  const [viewCount] = useStore('rankChat.viewCount', false);
-  const [style] = useStore('rankChat.style', '');
+  const [streamerId] = useStore('streamerId');
+  const [limit] = useStore('rankChat.limit');
+  const [viewCount] = useStore('rankChat.viewCount');
+  const [style] = useStore('rankChat.style');
 
   const key = 'rank-chat';
   const { data } = useGetChatRankChatQuery({ streamerId, limit });

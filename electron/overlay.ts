@@ -1,10 +1,14 @@
 import type { SSEMessage, SSEReplyInterface } from '@fastify/sse';
 import type { FastifyPluginAsync } from 'fastify';
 
-export type OverlayKey = 'rank-chat' | 'rank-donation';
+import type {
+  OverlayKey,
+  PostOverlayControlBody,
+  PostOverlayControlResponse,
+} from '../shared/types';
+
 type ClientsType = Record<OverlayKey, Set<SSEReplyInterface>>;
-type PlaybackState = { revision: number; status: 'playing' | 'stopped' };
-type PlaybackType = Record<OverlayKey, PlaybackState>;
+type PlaybackType = Record<OverlayKey, PostOverlayControlResponse>;
 
 const clients: ClientsType = {
   'rank-chat': new Set<SSEReplyInterface>(),
@@ -15,7 +19,7 @@ const playback: PlaybackType = {
   'rank-donation': { revision: 0, status: 'stopped' },
 };
 
-const toSSEMessage = (state: PlaybackState): SSEMessage => ({
+const toSSEMessage = (state: PostOverlayControlResponse): SSEMessage => ({
   id: state.revision.toString(),
   event: 'playback',
   data: state,
@@ -37,9 +41,6 @@ const broadcast = async (key: OverlayKey, message: SSEMessage) => {
     }),
   );
 };
-
-export type PostOverlayControlBody = { action: 'play' | 'stop' };
-export type PostOverlayControlResponse = PlaybackState;
 
 const routes: FastifyPluginAsync = async (fastify) => {
   fastify.post<{ Params: { key: OverlayKey }; Body: PostOverlayControlBody }>(

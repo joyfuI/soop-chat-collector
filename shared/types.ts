@@ -1,9 +1,10 @@
-export type {
-  OverlayKey,
-  PostOverlayControlBody,
-  PostOverlayControlResponse,
-} from '../electron/overlay';
-export type { StoreType } from '../electron/store';
+export type PostOverlayControlBody = { action: 'play' | 'stop' };
+export type PostOverlayControlResponse = {
+  revision: number;
+  status: 'playing' | 'stopped';
+};
+
+export type OverlayKey = 'rank-chat' | 'rank-donation';
 
 export type DotPath<T> = T extends object
   ? {

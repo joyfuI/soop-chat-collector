@@ -8,7 +8,7 @@ import RankChat from './RankChat';
 import RankDonation from './RankDonation';
 
 const App = () => {
-  const [tab, setTab] = useStore('tab', 0);
+  const [tab, setTab] = useStore('tab');
 
   const handleChange = (_e: SyntheticEvent, newValue: number) => {
     setTab(newValue);

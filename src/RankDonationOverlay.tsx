@@ -7,10 +7,10 @@ import useOverlaySSE from './hooks/useOverlaySSE';
 import useStore from './hooks/useStore';
 
 const RankDonationOverlay = () => {
-  const [streamerId] = useStore('streamerId', '');
-  const [limit] = useStore('rankDonation.limit', 5);
-  const [viewCount] = useStore('rankDonation.viewCount', false);
-  const [style] = useStore('rankDonation.style', '');
+  const [streamerId] = useStore('streamerId');
+  const [limit] = useStore('rankDonation.limit');
+  const [viewCount] = useStore('rankDonation.viewCount');
+  const [style] = useStore('rankDonation.style');
 
   const key = 'rank-donation';
   const { data } = useGetChatRankDonationQuery({ streamerId, limit });

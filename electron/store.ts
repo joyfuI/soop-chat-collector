@@ -4,22 +4,10 @@ import Store from 'electron-store';
 import type { FastifyPluginAsync } from 'fastify';
 import * as z from 'zod';
 
-import type { DotPath, DotPathValue } from '../src/types';
+import type { StoreType } from '../shared/storeSchema';
+import { storeSchema } from '../shared/storeSchema';
+import type { DotPath, DotPathValue } from '../shared/types';
 
-const zodSchema = z.object({
-  tab: z.number().default(0),
-  streamerId: z.string().default(''),
-  rankChat: z
-    .object({ limit: z.number(), viewCount: z.boolean(), style: z.string() })
-    .default({ limit: 50, viewCount: false, style: '' }),
-  rankDonation: z
-    .object({ limit: z.number(), viewCount: z.boolean(), style: z.string() })
-    .default({ limit: 5, viewCount: false, style: '' }),
-});
-
-const jsonSchema = z.toJSONSchema(zodSchema);
-
-export type StoreType = z.infer<typeof zodSchema>;
 type StoreKey = DotPath<StoreType>;
 type StoreValue = DotPathValue<StoreType, StoreKey>;
 
@@ -28,6 +16,7 @@ const getStore = () => {
   if (store) {
     return store;
   }
+  const jsonSchema = z.toJSONSchema(storeSchema);
   store = new Store<StoreType>({
     schema: jsonSchema.properties as Schema<StoreType>,
     name: app.getName(),

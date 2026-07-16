@@ -5,7 +5,7 @@ import type {
   OverlayKey,
   PostOverlayControlBody,
   PostOverlayControlResponse,
-} from '../types';
+} from '../../shared/types';
 import fetchBase from '../utils/fetchBase';
 import fetchJson from '../utils/fetchJson';
 

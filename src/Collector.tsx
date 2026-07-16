@@ -13,7 +13,7 @@ import {
 import useStore from './hooks/useStore';
 
 const Collector = () => {
-  const [streamerId, setStreamerId] = useStore('streamerId', '');
+  const [streamerId, setStreamerId] = useStore('streamerId');
 
   const { data: isStarted } = useGetSoopQuery();
   const { mutateAsync: connectMutateAsync } = usePostSoopQuery();
