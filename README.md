@@ -71,15 +71,24 @@ VITE_API_PORT=3000
 
 ```html
 <div class="root">
-  <div class="item">
-    <div class="image"></div>
-    <div class="text">
-      <span class="rank">1</span>
-      <span class="username">닉네임</span>
-      <span class="chat-count">채팅수</span>
-    </div>
+  <div class="extras">
+    <div class="extra-1"></div>
+    <div class="extra-2"></div>
+    <div class="extra-3"></div>
+    <div class="extra-4"></div>
+    <div class="extra-5"></div>
   </div>
-  ...
+  <div class="items">
+    <div class="item">
+      <div class="image"></div>
+      <div class="text">
+        <span class="rank">1</span>
+        <span class="username">닉네임</span>
+        <span class="chat-count">채팅수</span>
+      </div>
+    </div>
+    ...
+  </div>
 </div>
 ```
 - 채팅 순위의 DOM 구조는 위와 같은 형태입니다.
@@ -91,15 +100,24 @@ VITE_API_PORT=3000
 
 ```html
 <div class="root">
-  <div class="item">
-    <div class="image"></div>
-    <div class="text">
-      <span class="rank">1</span>
-      <span class="username">닉네임</span>
-      <span class="total-donation">별풍선수</span>
-    </div>
+  <div class="extras">
+    <div class="extra-1"></div>
+    <div class="extra-2"></div>
+    <div class="extra-3"></div>
+    <div class="extra-4"></div>
+    <div class="extra-5"></div>
   </div>
-  ...
+  <div class="items">
+    <div class="item">
+      <div class="image"></div>
+      <div class="text">
+        <span class="rank">1</span>
+        <span class="username">닉네임</span>
+        <span class="total-donation">별풍선수</span>
+      </div>
+    </div>
+    ...
+  </div>
 </div>
 ```
 - 별풍선 순위의 DOM 구조는 위와 같은 형태입니다.

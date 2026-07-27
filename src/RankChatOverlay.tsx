@@ -29,18 +29,27 @@ ${style}
       sx={{ overflow: 'hidden' }}
     >
       <div className="root">
-        {data?.map((item) => (
-          <div className="item" key={item.userId}>
-            <div className="image" />
-            <div className="text">
-              <span className="rank">{item.rank}</span>
-              <span className="username">{item.username}</span>
-              {viewCount ? (
-                <span className="chat-count">{item.chatCount}</span>
-              ) : null}
+        <div className="extras">
+          <div className="extra-1" />
+          <div className="extra-2" />
+          <div className="extra-3" />
+          <div className="extra-4" />
+          <div className="extra-5" />
+        </div>
+        <div className="items">
+          {data?.map((item) => (
+            <div className="item" key={item.userId}>
+              <div className="image" />
+              <div className="text">
+                <span className="rank">{item.rank}</span>
+                <span className="username">{item.username}</span>
+                {viewCount ? (
+                  <span className="chat-count">{item.chatCount}</span>
+                ) : null}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </Box>
   );
