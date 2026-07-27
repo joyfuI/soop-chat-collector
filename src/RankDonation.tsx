@@ -94,10 +94,7 @@ const RankDonation = () => {
             />
             <FormControlLabel
               control={
-                <Switch
-                  defaultChecked={viewCount}
-                  onChange={handleViewCountChange}
-                />
+                <Switch checked={viewCount} onChange={handleViewCountChange} />
               }
               label="별풍선 개수 보이기"
             />

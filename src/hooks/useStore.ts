@@ -10,7 +10,7 @@ import {
 } from './useStoreQuery';
 
 type UseStoreReturn<T> = readonly [
-  T,
+  T | undefined,
   (newValue: T | ((oldValue: T) => T)) => void,
   () => void,
 ];
@@ -30,11 +30,11 @@ const getStoreDefault = <K extends DotPath<StoreType>>(
 const useStore = <K extends DotPath<StoreType>>(
   key: K,
 ): UseStoreReturn<DotPathValue<StoreType, K>> => {
-  const { data } = useGetStoreQuery(key);
+  const { data, isFetched } = useGetStoreQuery(key);
   const { mutate: putMutate } = usePutStoreQuery(key);
   const { mutate: deleteMutate } = useDeleteStoreQuery(key);
 
-  const storedValue = data ?? getStoreDefault(key);
+  const storedValue = isFetched ? (data ?? getStoreDefault(key)) : undefined;
   const storedValueRef = useRef(storedValue);
   storedValueRef.current = storedValue;
 

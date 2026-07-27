@@ -95,10 +95,7 @@ const RankChat = () => {
             />
             <FormControlLabel
               control={
-                <Switch
-                  defaultChecked={viewCount}
-                  onChange={handleViewCountChange}
-                />
+                <Switch checked={viewCount} onChange={handleViewCountChange} />
               }
               label="채팅 개수 보이기"
             />

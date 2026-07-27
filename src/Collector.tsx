@@ -25,10 +25,14 @@ const Collector = () => {
   };
 
   const handleStartClick = async () => {
-    try {
-      await connectMutateAsync(streamerId);
-    } catch {
-      alert('연결 실패!');
+    if (streamerId) {
+      try {
+        await connectMutateAsync(streamerId);
+      } catch {
+        alert('연결 실패!');
+      }
+    } else {
+      alert('SOOP ID가 설정되지 않았습니다!');
     }
   };
 
