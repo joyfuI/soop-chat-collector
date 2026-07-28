@@ -1,6 +1,7 @@
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { app, BrowserWindow, shell } from 'electron';
+import getPort, { portNumbers } from 'get-port';
 
 import createHttpServer from './createHttpServer';
 
@@ -60,7 +61,8 @@ if (process.env.VITE_DEV_SERVER_URL) {
     port: parseInt(import.meta.env.VITE_API_PORT, 10),
   });
 } else {
-  serverAddress = createHttpServer(RENDERER_DIST).listen({ port: 0 });
+  const port = await getPort({ port: portNumbers(3000, 3100) });
+  serverAddress = createHttpServer(RENDERER_DIST).listen({ port });
 }
 
 app.on('window-all-closed', () => {
