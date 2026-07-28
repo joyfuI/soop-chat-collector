@@ -64,5 +64,7 @@ export const useGetSoopDetailQuery = (streamerId?: string) => {
             `/api/soop/detail?streamerId=${encodeURIComponent(streamerId)}`,
           )
       : skipToken,
+    refetchInterval: 10000,
+    refetchIntervalInBackground: true,
   });
 };

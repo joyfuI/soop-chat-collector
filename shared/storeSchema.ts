@@ -3,6 +3,7 @@ import * as z from 'zod';
 export const storeSchema = z.object({
   tab: z.number().default(0),
   streamerId: z.string().default(''),
+  watch: z.boolean().default(false),
   rankChat: z
     .object({ limit: z.number(), viewCount: z.boolean(), style: z.string() })
     .default({ limit: 50, viewCount: false, style: '' }),
