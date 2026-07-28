@@ -6,6 +6,10 @@ import { defineConfig, loadEnv } from 'vite';
 import electron from 'vite-plugin-electron/simple';
 
 const projectRoot = fileURLToPath(new URL('.', import.meta.url));
+const ignore = [
+  path.join(projectRoot, 'release'),
+  path.join(projectRoot, 'soop-chat-collector'),
+];
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
@@ -29,18 +33,15 @@ export default defineConfig(({ mode }) => {
           const absolutePath = path.isAbsolute(watchedPath)
             ? watchedPath
             : path.resolve(projectRoot, watchedPath);
-
-          const relativePath = path.relative(
-            path.join(projectRoot, 'soop-chat-collector'),
-            absolutePath,
-          );
-
-          return (
-            relativePath === '' ||
-            (relativePath !== '..' &&
-              !relativePath.startsWith(`..${path.sep}`) &&
-              !path.isAbsolute(relativePath))
-          );
+          return ignore.some((directory) => {
+            const relativePath = path.relative(directory, absolutePath);
+            return (
+              relativePath === '' ||
+              (relativePath !== '..' &&
+                !relativePath.startsWith(`..${path.sep}`) &&
+                !path.isAbsolute(relativePath))
+            );
+          });
         },
       },
     },

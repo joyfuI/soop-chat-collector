@@ -61,7 +61,7 @@ if (process.env.VITE_DEV_SERVER_URL) {
     port: parseInt(import.meta.env.VITE_API_PORT, 10),
   });
 } else {
-  const port = await getPort({ port: portNumbers(3000, 3100) });
+  const port = await getPort({ port: portNumbers(5000, 5100) });
   serverAddress = createHttpServer(RENDERER_DIST).listen({ port });
 }
 
