@@ -4,6 +4,7 @@ import type {
   DonationResponse,
   EmotionResponse,
   SoopChat,
+  SubscribeResponse,
 } from 'soop-extension';
 import { SoopChatEvent, SoopClient } from 'soop-extension';
 
@@ -14,7 +15,8 @@ type TypeResponse =
   | [type: SoopChatEvent.EMOTICON, response: EmotionResponse]
   | [type: SoopChatEvent.TEXT_DONATION, response: DonationResponse]
   | [type: SoopChatEvent.VIDEO_DONATION, response: DonationResponse]
-  | [type: SoopChatEvent.AD_BALLOON_DONATION, response: DonationResponse];
+  | [type: SoopChatEvent.AD_BALLOON_DONATION, response: DonationResponse]
+  | [type: SoopChatEvent.SUBSCRIBE, response: SubscribeResponse];
 
 const handleChat = (
   fastify: FastifyInstance,
@@ -45,6 +47,12 @@ const handleChat = (
       username = response.fromUsername;
       userId = response.from;
       value = response.amount;
+      break;
+
+    case SoopChatEvent.SUBSCRIBE:
+      username = response.fromUsername;
+      userId = response.from;
+      value = `${response.monthCount}|${response.tier}`;
       break;
 
     default:
@@ -120,6 +128,11 @@ const routes: FastifyPluginAsync = async (fastify) => {
             SoopChatEvent.AD_BALLOON_DONATION,
             response,
           ),
+        );
+
+        // 구독 데이터
+        soopChat.on(SoopChatEvent.SUBSCRIBE, (response) =>
+          handleChat(fastify, streamerId, SoopChatEvent.SUBSCRIBE, response),
         );
 
         // 연결 종료
