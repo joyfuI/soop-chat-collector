@@ -1,4 +1,10 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  skipToken,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
+import type { SoopChannel } from 'soop-extension';
 
 import fetchBase from '../utils/fetchBase';
 import fetchJson from '../utils/fetchJson';
@@ -32,5 +38,19 @@ export const useDeleteSoopQuery = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['soop'] });
     },
+  });
+};
+
+type StationInfo = Awaited<ReturnType<SoopChannel['station']>>;
+
+export const useGetSoopStationQuery = (streamerId?: string) => {
+  return useQuery({
+    queryKey: ['station', streamerId],
+    queryFn: streamerId
+      ? () =>
+          fetchJson<StationInfo>(
+            `/api/soop/station?streamerId=${encodeURIComponent(streamerId)}`,
+          )
+      : skipToken,
   });
 };

@@ -1,4 +1,5 @@
-import type { FastifyInstance, FastifyPluginAsync } from 'fastify';
+import type { FastifyInstance } from 'fastify';
+import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
 import type {
   ChatResponse,
   DonationResponse,
@@ -7,6 +8,7 @@ import type {
   SubscribeResponse,
 } from 'soop-extension';
 import { SoopChatEvent, SoopClient } from 'soop-extension';
+import * as z from 'zod';
 
 const soopChatRef: { current: SoopChat | null } = { current: null };
 
@@ -17,6 +19,8 @@ type TypeResponse =
   | [type: SoopChatEvent.VIDEO_DONATION, response: DonationResponse]
   | [type: SoopChatEvent.AD_BALLOON_DONATION, response: DonationResponse]
   | [type: SoopChatEvent.SUBSCRIBE, response: SubscribeResponse];
+
+const client = new SoopClient();
 
 const handleChat = (
   fastify: FastifyInstance,
@@ -77,7 +81,7 @@ VALUES (:streamerId, :type, :receivedTime, :username, :userId, :value);
   );
 };
 
-const routes: FastifyPluginAsync = async (fastify) => {
+const routes: FastifyPluginAsyncZod = async (fastify) => {
   fastify.post<{ Body: { streamerId: string } }>(
     '/api/soop',
     async (request, reply) => {
@@ -86,7 +90,6 @@ const routes: FastifyPluginAsync = async (fastify) => {
         return reply.code(400).send({ message: 'streamerId value is missing' });
       }
       try {
-        const client = new SoopClient();
         const soopChat = client.chat({ streamerId });
         soopChatRef.current = soopChat;
 
@@ -163,6 +166,15 @@ const routes: FastifyPluginAsync = async (fastify) => {
     soopChatRef.current = null;
     soopChat?.disconnect();
   });
+
+  fastify.get(
+    '/api/soop/station',
+    { schema: { querystring: z.object({ streamerId: z.coerce.string() }) } },
+    async (request) => {
+      const { streamerId } = request.query;
+      return await client.channel.station(streamerId);
+    },
+  );
 };
 
 export default routes;
