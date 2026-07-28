@@ -79,6 +79,31 @@ VALUES (:streamerId, :type, :receivedTime, :username, :userId, :value);
       value,
     },
   );
+  if (
+    (type === SoopChatEvent.TEXT_DONATION ||
+      type === SoopChatEvent.VIDEO_DONATION ||
+      type === SoopChatEvent.AD_BALLOON_DONATION) &&
+    parseInt(response.fanClubOrdinal, 10) !== 0
+  ) {
+    // 팬가입
+    console.log(
+      `[${receivedTime}|fanClub] ${username}(${userId}): ${response.fanClubOrdinal}`,
+    );
+    fastify.sqlite.run(
+      `
+INSERT INTO chat (streamerId, type, receivedTime, username, userId, value)
+VALUES (:streamerId, :type, :receivedTime, :username, :userId, :value);
+`,
+      {
+        streamerId,
+        type: 'fanClub',
+        receivedTime,
+        username,
+        userId: userId.replace(/\(\d\)$/, ''),
+        value: response.fanClubOrdinal,
+      },
+    );
+  }
 };
 
 const routes: FastifyPluginAsyncZod = async (fastify) => {
