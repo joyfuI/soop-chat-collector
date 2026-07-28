@@ -13,7 +13,11 @@ const RankChatOverlay = () => {
   const [style] = useStore('rankChat.style');
 
   const key = 'rank-chat';
-  const { data } = useGetChatRankChatQuery({ streamerId, limit });
+  const { data } = useGetChatRankChatQuery(
+    streamerId !== undefined && limit !== undefined
+      ? { streamerId, limit }
+      : undefined,
+  );
   const { data: playbackData } = useGetOverlayControlQuery(key);
   useOverlaySSE(key);
 

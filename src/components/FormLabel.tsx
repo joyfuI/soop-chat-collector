@@ -18,7 +18,7 @@ const FormLabel = ({ children, label, description }: FormLabelProps) => {
         <Typography
           gutterBottom
           sx={{ display: 'block', whiteSpace: 'pre-wrap' }}
-          variant="caption"
+          variant="body2"
         >
           {description}
         </Typography>

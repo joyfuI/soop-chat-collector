@@ -13,7 +13,11 @@ const RankDonationOverlay = () => {
   const [style] = useStore('rankDonation.style');
 
   const key = 'rank-donation';
-  const { data } = useGetChatRankDonationQuery({ streamerId, limit });
+  const { data } = useGetChatRankDonationQuery(
+    streamerId !== undefined && limit !== undefined
+      ? { streamerId, limit }
+      : undefined,
+  );
   const { data: playbackData } = useGetOverlayControlQuery(key);
   useOverlaySSE(key);
 

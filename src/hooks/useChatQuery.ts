@@ -7,14 +7,15 @@ import {
 
 import fetchBase from '../utils/fetchBase';
 import fetchJson from '../utils/fetchJson';
+import objectToQueryString from '../utils/objectToQueryString';
 
-export const useGetChatRankChatQuery = (params: {
+export const useGetChatRankChatQuery = (params?: {
   streamerId?: string;
   limit?: number;
 }) => {
   return useQuery({
     queryKey: ['chat', 'rank-chat', params],
-    queryFn: params.streamerId
+    queryFn: params?.streamerId
       ? () =>
           fetchJson<
             {
@@ -23,20 +24,18 @@ export const useGetChatRankChatQuery = (params: {
               username: string;
               chatCount: number;
             }[]
-          >(
-            `/api/chat/rank-chat?${new URLSearchParams(params as unknown as Record<string, string>).toString()}`,
-          )
+          >(`/api/chat/rank-chat?${objectToQueryString(params)}`)
       : skipToken,
   });
 };
 
-export const useGetChatRankDonationQuery = (params: {
+export const useGetChatRankDonationQuery = (params?: {
   streamerId?: string;
   limit?: number;
 }) => {
   return useQuery({
     queryKey: ['chat', 'rank-donation', params],
-    queryFn: params.streamerId
+    queryFn: params?.streamerId
       ? () =>
           fetchJson<
             {
@@ -45,9 +44,7 @@ export const useGetChatRankDonationQuery = (params: {
               username: string;
               totalDonation: number;
             }[]
-          >(
-            `/api/chat/rank-donation?${new URLSearchParams(params as unknown as Record<string, string>).toString()}`,
-          )
+          >(`/api/chat/rank-donation?${objectToQueryString(params)}`)
       : skipToken,
   });
 };

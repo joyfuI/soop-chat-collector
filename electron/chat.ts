@@ -46,7 +46,7 @@ LIMIT :limit;
       schema: {
         querystring: z.object({
           streamerId: z.coerce.string(),
-          limit: z.coerce.number().int().min(1).default(50),
+          limit: z.coerce.number().int().min(1).default(5),
         }),
       },
     },
