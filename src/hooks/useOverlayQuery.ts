@@ -1,5 +1,4 @@
-import type { QueryClient } from '@tanstack/react-query';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
 import type {
   OverlayKey,
@@ -9,24 +8,7 @@ import type {
 import fetchBase from '../utils/fetchBase';
 import fetchJson from '../utils/fetchJson';
 
-export const setOverlayControlQueryData = (
-  queryClient: QueryClient,
-  key: OverlayKey,
-  newData: PostOverlayControlResponse,
-) => {
-  queryClient.setQueryData<PostOverlayControlResponse>(
-    ['overlay', key],
-    (oldData) => {
-      if (oldData && newData.revision < oldData.revision) {
-        return oldData;
-      }
-      return newData;
-    },
-  );
-};
-
 export const usePostOverlayControlQuery = (key: OverlayKey) => {
-  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (action: PostOverlayControlBody['action']) =>
       fetchJson<PostOverlayControlResponse>(`/api/overlay/${key}/control`, {
@@ -34,10 +16,6 @@ export const usePostOverlayControlQuery = (key: OverlayKey) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ action }),
       }),
-    onSuccess: (newData) => {
-      // SSE 도착 전에도 즉시 갱신
-      setOverlayControlQueryData(queryClient, key, newData);
-    },
   });
 };
 

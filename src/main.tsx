@@ -10,7 +10,9 @@ import { createAppRouter } from './router';
 import theme from './theme';
 import './styles.css';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: { queries: { staleTime: Infinity } },
+});
 const router = createAppRouter();
 
 const rootElement = document.getElementById('root');
