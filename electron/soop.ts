@@ -200,6 +200,15 @@ const routes: FastifyPluginAsyncZod = async (fastify) => {
       return await client.channel.station(streamerId);
     },
   );
+
+  fastify.get(
+    '/api/soop/detail',
+    { schema: { querystring: z.object({ streamerId: z.coerce.string() }) } },
+    async (request) => {
+      const { streamerId } = request.query;
+      return await client.live.detail(streamerId);
+    },
+  );
 };
 
 export default routes;

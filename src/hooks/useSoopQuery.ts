@@ -4,7 +4,7 @@ import {
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
-import type { SoopChannel } from 'soop-extension';
+import type { LiveDetail, SoopChannel } from 'soop-extension';
 
 import fetchBase from '../utils/fetchBase';
 import fetchJson from '../utils/fetchJson';
@@ -50,6 +50,18 @@ export const useGetSoopStationQuery = (streamerId?: string) => {
       ? () =>
           fetchJson<StationInfo>(
             `/api/soop/station?streamerId=${encodeURIComponent(streamerId)}`,
+          )
+      : skipToken,
+  });
+};
+
+export const useGetSoopDetailQuery = (streamerId?: string) => {
+  return useQuery({
+    queryKey: ['detail', streamerId],
+    queryFn: streamerId
+      ? () =>
+          fetchJson<LiveDetail>(
+            `/api/soop/detail?streamerId=${encodeURIComponent(streamerId)}`,
           )
       : skipToken,
   });
