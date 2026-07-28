@@ -32,23 +32,32 @@ ${style}
       key={playbackData.revision}
       sx={{ overflow: 'hidden' }}
     >
-      <div className="root">
+      <div className={`root root-${key}`}>
         <div className="extras">
-          <div className="extra-1" />
-          <div className="extra-2" />
-          <div className="extra-3" />
-          <div className="extra-4" />
-          <div className="extra-5" />
+          <div className="extra extra-1" />
+          <div className="extra extra-2" />
+          <div className="extra extra-3" />
+          <div className="extra extra-4" />
+          <div className="extra extra-5" />
         </div>
         <div className="items">
           {data?.map((item) => (
             <div className="item" key={item.userId}>
               <div className="image" />
               <div className="text">
-                <span className="rank">{item.rank}</span>
-                <span className="username">{item.username}</span>
+                <span className="rank" data-value={item.rank}>
+                  {item.rank}
+                </span>
+                <span className="username" data-value={item.username}>
+                  {item.username}
+                </span>
                 {viewCount ? (
-                  <span className="total-donation">{item.totalDonation}</span>
+                  <span
+                    className="total-donation"
+                    data-value={item.totalDonation}
+                  >
+                    {item.totalDonation}
+                  </span>
                 ) : null}
               </div>
             </div>

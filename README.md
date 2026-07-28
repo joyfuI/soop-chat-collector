@@ -71,21 +71,21 @@ VITE_API_PORT=3000
 ### 채팅 순위
 
 ```html
-<div class="root">
+<div class="root root-rank-chat">
   <div class="extras">
-    <div class="extra-1"></div>
-    <div class="extra-2"></div>
-    <div class="extra-3"></div>
-    <div class="extra-4"></div>
-    <div class="extra-5"></div>
+    <div class="extra extra-1"></div>
+    <div class="extra extra-2"></div>
+    <div class="extra extra-3"></div>
+    <div class="extra extra-4"></div>
+    <div class="extra extra-5"></div>
   </div>
   <div class="items">
     <div class="item">
       <div class="image"></div>
       <div class="text">
-        <span class="rank">1</span>
-        <span class="username">닉네임</span>
-        <span class="chat-count">채팅수</span>
+        <span class="rank" data-value="1">1</span>
+        <span class="username" data-value="닉네임">닉네임</span>
+        <span class="chat-count" data-value="채팅수">채팅수</span>
       </div>
     </div>
     ...
@@ -100,21 +100,21 @@ VITE_API_PORT=3000
 ### 별풍선 순위
 
 ```html
-<div class="root">
+<div class="root root-rank-donation">
   <div class="extras">
-    <div class="extra-1"></div>
-    <div class="extra-2"></div>
-    <div class="extra-3"></div>
-    <div class="extra-4"></div>
-    <div class="extra-5"></div>
+    <div class="extra extra-1"></div>
+    <div class="extra extra-2"></div>
+    <div class="extra extra-3"></div>
+    <div class="extra extra-4"></div>
+    <div class="extra extra-5"></div>
   </div>
   <div class="items">
     <div class="item">
       <div class="image"></div>
       <div class="text">
-        <span class="rank">1</span>
-        <span class="username">닉네임</span>
-        <span class="total-donation">별풍선수</span>
+        <span class="rank" data-value="1">1</span>
+        <span class="username" data-value="닉네임">닉네임</span>
+        <span class="total-donation" data-value="별풍선수">별풍선수</span>
       </div>
     </div>
     ...
