@@ -20,10 +20,10 @@ import RankChatOverlay from './RankChatOverlay';
 import copyText from './utils/copyText';
 
 const RankChat = () => {
-  const [limit, setLimit] = useStore('rankChat.limit');
-  const [viewCount, setViewCount] = useStore('rankChat.viewCount');
-  const [viewLastChat, setViewLastChat] = useStore('rankChat.viewLastChat');
-  const [style, setStyle] = useStore('rankChat.style');
+  const [limit, setLimit] = useStore('rankChatLimit');
+  const [viewCount, setViewCount] = useStore('rankChatViewCount');
+  const [viewLastChat, setViewLastChat] = useStore('rankChatViewLastChat');
+  const [style, setStyle] = useStore('rankChatStyle');
   const prevOptions = useRef({ limit, viewCount, viewLastChat, style });
 
   const key = 'rank-chat';

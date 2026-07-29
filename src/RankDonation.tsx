@@ -20,10 +20,10 @@ import RankDonationOverlay from './RankDonationOverlay';
 import copyText from './utils/copyText';
 
 const RankDonation = () => {
-  const [limit, setLimit] = useStore('rankDonation.limit');
-  const [viewCount, setViewCount] = useStore('rankDonation.viewCount');
-  const [viewLastChat, setViewLastChat] = useStore('rankDonation.viewLastChat');
-  const [style, setStyle] = useStore('rankDonation.style');
+  const [limit, setLimit] = useStore('rankDonationLimit');
+  const [viewCount, setViewCount] = useStore('rankDonationViewCount');
+  const [viewLastChat, setViewLastChat] = useStore('rankDonationViewLastChat');
+  const [style, setStyle] = useStore('rankDonationStyle');
   const prevOptions = useRef({ limit, viewCount, viewLastChat, style });
 
   const key = 'rank-donation';

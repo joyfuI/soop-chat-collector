@@ -4,22 +4,14 @@ export const storeSchema = z.object({
   tab: z.number().default(0),
   streamerId: z.string().default(''),
   watch: z.boolean().default(false),
-  rankChat: z
-    .object({
-      limit: z.number(),
-      viewCount: z.boolean(),
-      viewLastChat: z.boolean(),
-      style: z.string(),
-    })
-    .default({ limit: 50, viewCount: false, viewLastChat: false, style: '' }),
-  rankDonation: z
-    .object({
-      limit: z.number(),
-      viewCount: z.boolean(),
-      viewLastChat: z.boolean(),
-      style: z.string(),
-    })
-    .default({ limit: 5, viewCount: false, viewLastChat: false, style: '' }),
+  rankChatLimit: z.number().default(50),
+  rankChatViewCount: z.boolean().default(false),
+  rankChatViewLastChat: z.boolean().default(false),
+  rankChatStyle: z.string().default(''),
+  rankDonationLimit: z.number().default(5),
+  rankDonationViewCount: z.boolean().default(false),
+  rankDonationViewLastChat: z.boolean().default(false),
+  rankDonationStyle: z.string().default(''),
 });
 
 export type StoreType = z.output<typeof storeSchema>;

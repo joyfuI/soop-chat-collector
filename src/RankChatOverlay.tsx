@@ -9,10 +9,10 @@ import useStore from './hooks/useStore';
 
 const RankChatOverlay = () => {
   const [streamerId] = useStore('streamerId');
-  const [limit] = useStore('rankChat.limit');
-  const [viewCount] = useStore('rankChat.viewCount');
-  const [viewLastChat] = useStore('rankChat.viewLastChat');
-  const [style] = useStore('rankChat.style');
+  const [limit] = useStore('rankChatLimit');
+  const [viewCount] = useStore('rankChatViewCount');
+  const [viewLastChat] = useStore('rankChatViewLastChat');
+  const [style] = useStore('rankChatStyle');
 
   const key = 'rank-chat';
   const { data } = useGetChatRankChatQuery(

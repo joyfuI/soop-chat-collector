@@ -9,10 +9,10 @@ import useStore from './hooks/useStore';
 
 const RankDonationOverlay = () => {
   const [streamerId] = useStore('streamerId');
-  const [limit] = useStore('rankDonation.limit');
-  const [viewCount] = useStore('rankDonation.viewCount');
-  const [viewLastChat] = useStore('rankDonation.viewLastChat');
-  const [style] = useStore('rankDonation.style');
+  const [limit] = useStore('rankDonationLimit');
+  const [viewCount] = useStore('rankDonationViewCount');
+  const [viewLastChat] = useStore('rankDonationViewLastChat');
+  const [style] = useStore('rankDonationStyle');
 
   const key = 'rank-donation';
   const { data } = useGetChatRankDonationQuery(
