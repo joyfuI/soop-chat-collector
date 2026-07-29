@@ -10,6 +10,9 @@ import type {
 import { SoopChatEvent, SoopClient } from 'soop-extension';
 import * as z from 'zod';
 
+import type { RankChatMessage } from '../shared/types';
+import { broadcast } from './overlay';
+
 const soopChatRef: { current: SoopChat | null } = { current: null };
 
 type TypeResponse =
@@ -63,6 +66,7 @@ const handleChat = (
       console.log(`[${receivedTime}|${type}] ${JSON.stringify(other)}`);
       return;
   }
+  const normalizedUserId = userId.replace(/\(\d\)$/, '');
 
   console.log(`[${receivedTime}|${type}] ${username}(${userId}): ${value}`);
   fastify.sqlite.run(
@@ -75,10 +79,20 @@ VALUES (:streamerId, :type, :receivedTime, :username, :userId, :value);
       type,
       receivedTime,
       username,
-      userId: userId.replace(/\(\d\)$/, ''),
+      userId: normalizedUserId,
       value,
     },
   );
+  if (type === SoopChatEvent.CHAT) {
+    broadcast('rank-chat', {
+      event: 'chat',
+      data: {
+        streamerId,
+        userId: normalizedUserId,
+        message: value,
+      } satisfies RankChatMessage,
+    });
+  }
   if (
     (type === SoopChatEvent.TEXT_DONATION ||
       type === SoopChatEvent.VIDEO_DONATION ||
@@ -99,7 +113,7 @@ VALUES (:streamerId, :type, :receivedTime, :username, :userId, :value);
         type: 'fanClub',
         receivedTime,
         username,
-        userId: userId.replace(/\(\d\)$/, ''),
+        userId: normalizedUserId,
         value: response.fanClubOrdinal,
       },
     );

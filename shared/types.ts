@@ -6,6 +6,12 @@ export type PostOverlayControlResponse = {
 
 export type OverlayKey = 'rank-chat' | 'rank-donation';
 
+export type RankChatMessage = {
+  streamerId: string;
+  userId: string;
+  message: string;
+};
+
 export type DotPath<T> = T extends object
   ? {
       [K in Extract<keyof T, string>]: NonNullable<T[K]> extends object

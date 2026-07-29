@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import type {
   OverlayKey,
   PostOverlayControlResponse,
+  RankChatMessage,
 } from '../../shared/types';
 
 const applyOverlayControlQueryData = async (
@@ -30,7 +31,10 @@ const applyOverlayControlQueryData = async (
   );
 };
 
-const useOverlaySSE = (key: OverlayKey) => {
+const useOverlaySSE = (
+  key: OverlayKey,
+  onChat?: (message: RankChatMessage) => void,
+) => {
   const queryClient = useQueryClient();
 
   useEffect(() => {
@@ -47,16 +51,26 @@ const useOverlaySSE = (key: OverlayKey) => {
     const onRefresh: EventListener = () => {
       queryClient.invalidateQueries({ queryKey: ['store'] });
     };
+    const onChatEvent: EventListener = (event) => {
+      try {
+        const data = JSON.parse(
+          (event as MessageEvent<string>).data,
+        ) as RankChatMessage;
+        onChat?.(data);
+      } catch {}
+    };
 
     source.addEventListener('playback', onPlayback);
     source.addEventListener('refresh', onRefresh);
+    source.addEventListener('chat', onChatEvent);
 
     return () => {
       source.removeEventListener('playback', onPlayback);
       source.removeEventListener('refresh', onRefresh);
+      source.removeEventListener('chat', onChatEvent);
       source.close();
     };
-  }, [key, queryClient]);
+  }, [key, onChat, queryClient]);
 };
 
 export default useOverlaySSE;

@@ -5,8 +5,13 @@ export const storeSchema = z.object({
   streamerId: z.string().default(''),
   watch: z.boolean().default(false),
   rankChat: z
-    .object({ limit: z.number(), viewCount: z.boolean(), style: z.string() })
-    .default({ limit: 50, viewCount: false, style: '' }),
+    .object({
+      limit: z.number(),
+      viewCount: z.boolean(),
+      viewLastChat: z.boolean(),
+      style: z.string(),
+    })
+    .default({ limit: 50, viewCount: false, viewLastChat: false, style: '' }),
   rankDonation: z
     .object({ limit: z.number(), viewCount: z.boolean(), style: z.string() })
     .default({ limit: 5, viewCount: false, style: '' }),

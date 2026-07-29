@@ -22,8 +22,9 @@ import copyText from './utils/copyText';
 const RankChat = () => {
   const [limit, setLimit] = useStore('rankChat.limit');
   const [viewCount, setViewCount] = useStore('rankChat.viewCount');
+  const [viewLastChat, setViewLastChat] = useStore('rankChat.viewLastChat');
   const [style, setStyle] = useStore('rankChat.style');
-  const prevOptions = useRef({ limit, viewCount, style });
+  const prevOptions = useRef({ limit, viewCount, viewLastChat, style });
 
   const key = 'rank-chat';
   const { data } = useGetOverlayControlQuery(key);
@@ -37,14 +38,15 @@ const RankChat = () => {
     const changed =
       options.limit !== limit ||
       options.viewCount !== viewCount ||
+      options.viewLastChat !== viewLastChat ||
       options.style !== style;
 
-    prevOptions.current = { limit, viewCount, style };
+    prevOptions.current = { limit, viewCount, viewLastChat, style };
 
     if (changed) {
       refreshMutate();
     }
-  }, [limit, viewCount, style, refreshMutate]);
+  }, [limit, viewCount, viewLastChat, style, refreshMutate]);
 
   const handleCopyClick = () => {
     copyText(url);
@@ -56,6 +58,10 @@ const RankChat = () => {
 
   const handleViewCountChange = (e: ChangeEvent<HTMLInputElement>) => {
     setViewCount(e.target.checked);
+  };
+
+  const handleViewLastChatChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setViewLastChat(e.target.checked);
   };
 
   const handleStyleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -101,6 +107,15 @@ const RankChat = () => {
                 />
               }
               label="채팅 개수 보이기"
+            />
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={viewLastChat ?? false}
+                  onChange={handleViewLastChatChange}
+                />
+              }
+              label="마지막 채팅 보이기"
             />
           </Stack>
         </FormLabel>

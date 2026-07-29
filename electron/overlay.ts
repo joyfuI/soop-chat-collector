@@ -25,7 +25,7 @@ const toSSEMessage = (state: PostOverlayControlResponse): SSEMessage => ({
   data: state,
 });
 
-const broadcast = async (key: OverlayKey, message: SSEMessage) => {
+export const broadcast = async (key: OverlayKey, message: SSEMessage) => {
   await Promise.all(
     [...clients[key]].map(async (client) => {
       if (!client.isConnected) {

@@ -1,15 +1,21 @@
 import { css } from '@emotion/react';
 import Box from '@mui/material/Box';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
+import type { RankChatMessage } from '../shared/types';
 import { useGetChatRankChatQuery } from './hooks/useChatQuery';
 import { useGetOverlayControlQuery } from './hooks/useOverlayQuery';
 import useOverlaySSE from './hooks/useOverlaySSE';
 import useStore from './hooks/useStore';
 
 const RankChatOverlay = () => {
+  const [lastChats, setLastChats] = useState<Record<string, string>>({});
+  const rankUserIds = useRef(new Set<string>());
+  const chatTimers = useRef(new Map<string, ReturnType<typeof setTimeout>>());
   const [streamerId] = useStore('streamerId');
   const [limit] = useStore('rankChat.limit');
   const [viewCount] = useStore('rankChat.viewCount');
+  const [viewLastChat] = useStore('rankChat.viewLastChat');
   const [style] = useStore('rankChat.style');
 
   const key = 'rank-chat';
@@ -18,8 +24,52 @@ const RankChatOverlay = () => {
       ? { streamerId, limit }
       : undefined,
   );
+  rankUserIds.current = new Set(data?.map((item) => item.userId));
   const { data: playbackData } = useGetOverlayControlQuery(key);
-  useOverlaySSE(key);
+
+  const handleChat = useCallback(
+    (chat: RankChatMessage) => {
+      if (
+        chat.streamerId !== streamerId ||
+        !rankUserIds.current.has(chat.userId)
+      ) {
+        return;
+      }
+
+      const previousTimer = chatTimers.current.get(chat.userId);
+      if (previousTimer) {
+        clearTimeout(previousTimer);
+      }
+
+      setLastChats((oldLastChats) => ({
+        ...oldLastChats,
+        [chat.userId]: chat.message,
+      }));
+      chatTimers.current.set(
+        chat.userId,
+        setTimeout(() => {
+          setLastChats((oldLastChats) => {
+            const newLastChats = { ...oldLastChats };
+            delete newLastChats[chat.userId];
+            return newLastChats;
+          });
+          chatTimers.current.delete(chat.userId);
+        }, 5000),
+      );
+    },
+    [streamerId],
+  );
+
+  useEffect(() => {
+    const timers = chatTimers.current;
+    return () => {
+      for (const timer of timers.values()) {
+        clearTimeout(timer);
+      }
+    };
+  }, []);
+
+  useOverlaySSE(key, handleChat);
 
   return (
     <Box
@@ -54,6 +104,14 @@ ${style}
                 {viewCount ? (
                   <span className="chat-count" data-value={item.chatCount}>
                     {item.chatCount}
+                  </span>
+                ) : null}
+                {viewLastChat ? (
+                  <span
+                    className="last-chat"
+                    data-value={lastChats[item.userId] ?? ''}
+                  >
+                    {lastChats[item.userId]}
                   </span>
                 ) : null}
               </div>
