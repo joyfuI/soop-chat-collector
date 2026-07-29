@@ -1,6 +1,6 @@
 import type { QueryClient } from '@tanstack/react-query';
 import { useQueryClient } from '@tanstack/react-query';
-import { useEffect } from 'react';
+import { useEffect, useEffectEvent } from 'react';
 
 import type {
   OverlayKey,
@@ -36,6 +36,17 @@ const useOverlaySSE = (
   onChat?: (message: RankChatMessage) => void,
 ) => {
   const queryClient = useQueryClient();
+  const onChatEvent = useEffectEvent((event: Event) => {
+    if (!onChat) {
+      return;
+    }
+    try {
+      const data = JSON.parse(
+        (event as MessageEvent<string>).data,
+      ) as RankChatMessage;
+      onChat(data);
+    } catch {}
+  });
 
   useEffect(() => {
     const source = new EventSource(`/api/overlay/${key}/events`);
@@ -51,14 +62,6 @@ const useOverlaySSE = (
     const onRefresh: EventListener = () => {
       queryClient.invalidateQueries({ queryKey: ['store'] });
     };
-    const onChatEvent: EventListener = (event) => {
-      try {
-        const data = JSON.parse(
-          (event as MessageEvent<string>).data,
-        ) as RankChatMessage;
-        onChat?.(data);
-      } catch {}
-    };
 
     source.addEventListener('playback', onPlayback);
     source.addEventListener('refresh', onRefresh);
@@ -70,7 +73,7 @@ const useOverlaySSE = (
       source.removeEventListener('chat', onChatEvent);
       source.close();
     };
-  }, [key, onChat, queryClient]);
+  }, [key, queryClient]);
 };
 
 export default useOverlaySSE;

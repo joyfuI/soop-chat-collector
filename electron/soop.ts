@@ -84,14 +84,13 @@ VALUES (:streamerId, :type, :receivedTime, :username, :userId, :value);
     },
   );
   if (type === SoopChatEvent.CHAT) {
-    broadcast('rank-chat', {
-      event: 'chat',
-      data: {
-        streamerId,
-        userId: normalizedUserId,
-        message: value,
-      } satisfies RankChatMessage,
-    });
+    const message = {
+      streamerId,
+      userId: normalizedUserId,
+      message: value,
+    } satisfies RankChatMessage;
+    broadcast('rank-chat', { event: 'chat', data: message });
+    broadcast('rank-donation', { event: 'chat', data: message });
   }
   if (
     (type === SoopChatEvent.TEXT_DONATION ||

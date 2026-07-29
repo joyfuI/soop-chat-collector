@@ -6,7 +6,8 @@ import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
-import { type ChangeEvent, useEffect, useRef } from 'react';
+import type { ChangeEvent } from 'react';
+import { useEffect, useRef } from 'react';
 
 import FormLabel from './components/FormLabel';
 import {
@@ -21,8 +22,9 @@ import copyText from './utils/copyText';
 const RankDonation = () => {
   const [limit, setLimit] = useStore('rankDonation.limit');
   const [viewCount, setViewCount] = useStore('rankDonation.viewCount');
+  const [viewLastChat, setViewLastChat] = useStore('rankDonation.viewLastChat');
   const [style, setStyle] = useStore('rankDonation.style');
-  const prevOptions = useRef({ limit, viewCount, style });
+  const prevOptions = useRef({ limit, viewCount, viewLastChat, style });
 
   const key = 'rank-donation';
   const { data } = useGetOverlayControlQuery(key);
@@ -36,14 +38,15 @@ const RankDonation = () => {
     const changed =
       options.limit !== limit ||
       options.viewCount !== viewCount ||
+      options.viewLastChat !== viewLastChat ||
       options.style !== style;
 
-    prevOptions.current = { limit, viewCount, style };
+    prevOptions.current = { limit, viewCount, viewLastChat, style };
 
     if (changed) {
       refreshMutate();
     }
-  }, [limit, viewCount, style, refreshMutate]);
+  }, [limit, viewCount, viewLastChat, style, refreshMutate]);
 
   const handleCopyClick = () => {
     copyText(url);
@@ -55,6 +58,10 @@ const RankDonation = () => {
 
   const handleViewCountChange = (e: ChangeEvent<HTMLInputElement>) => {
     setViewCount(e.target.checked);
+  };
+
+  const handleViewLastChatChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setViewLastChat(e.target.checked);
   };
 
   const handleStyleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -100,6 +107,15 @@ const RankDonation = () => {
                 />
               }
               label="별풍선 개수 보이기"
+            />
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={viewLastChat ?? false}
+                  onChange={handleViewLastChatChange}
+                />
+              }
+              label="마지막 채팅 보이기"
             />
           </Stack>
         </FormLabel>

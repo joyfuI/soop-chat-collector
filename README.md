@@ -117,6 +117,7 @@ VITE_API_PORT=3000
         <span class="rank" data-value="1">1</span>
         <span class="username" data-value="닉네임">닉네임</span>
         <span class="total-donation" data-value="별풍선수">별풍선수</span>
+        <span class="last-chat" data-value="마지막채팅">마지막채팅</span>
       </div>
     </div>
     ...
@@ -126,6 +127,7 @@ VITE_API_PORT=3000
 - 별풍선 순위의 DOM 구조는 위와 같은 형태입니다.
 - `커스텀 CSS`로 자유롭게 스타일 지정이 가능합니다.
 - `별풍선 개수 보이기`가 off 상태면 span.total-donation이 렌더링 되지 않습니다.
+- `마지막 채팅 보이기`가 off 상태면 span.last-chat이 렌더링 되지 않습니다.
 - 만약 `커스텀 CSS`에서 애니메이션을 설정했다면 `재생/정지`에서 `재생` 버튼을 눌러야 CSS 애니메이션이 재생됩니다.
 
 ## 프로젝트 구조

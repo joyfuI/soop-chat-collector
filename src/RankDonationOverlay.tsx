@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 import Box from '@mui/material/Box';
 
 import { useGetChatRankDonationQuery } from './hooks/useChatQuery';
+import useLastChats from './hooks/useLastChats';
 import { useGetOverlayControlQuery } from './hooks/useOverlayQuery';
 import useOverlaySSE from './hooks/useOverlaySSE';
 import useStore from './hooks/useStore';
@@ -10,6 +11,7 @@ const RankDonationOverlay = () => {
   const [streamerId] = useStore('streamerId');
   const [limit] = useStore('rankDonation.limit');
   const [viewCount] = useStore('rankDonation.viewCount');
+  const [viewLastChat] = useStore('rankDonation.viewLastChat');
   const [style] = useStore('rankDonation.style');
 
   const key = 'rank-donation';
@@ -19,7 +21,11 @@ const RankDonationOverlay = () => {
       : undefined,
   );
   const { data: playbackData } = useGetOverlayControlQuery(key);
-  useOverlaySSE(key);
+  const { lastChats, handleChat } = useLastChats(
+    streamerId,
+    data?.map((item) => item.userId),
+  );
+  useOverlaySSE(key, handleChat);
 
   return (
     <Box
@@ -57,6 +63,14 @@ ${style}
                     data-value={item.totalDonation}
                   >
                     {item.totalDonation}
+                  </span>
+                ) : null}
+                {viewLastChat ? (
+                  <span
+                    className="last-chat"
+                    data-value={lastChats[item.userId] ?? ''}
+                  >
+                    {lastChats[item.userId]}
                   </span>
                 ) : null}
               </div>
