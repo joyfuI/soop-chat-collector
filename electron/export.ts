@@ -1,5 +1,6 @@
 import { Readable } from 'node:stream';
 import { stringify } from 'csv-stringify';
+import { format } from 'date-fns';
 import type { FastifyPluginAsync } from 'fastify';
 
 type ExportRow = {
@@ -34,10 +35,7 @@ ORDER BY id
       record_delimiter: 'windows',
     });
 
-    const filename = `chat-${new Date()
-      .toISOString()
-      .replace(/\.\d{3}Z$/, '')
-      .replaceAll(':', '-')}.csv`;
+    const filename = `chat-${format(new Date(), "yyyy-MM-dd'T'HH-mm-ss")}.csv`;
 
     reply.header('Content-Type', 'text/csv; charset=utf-8');
     reply.header('Content-Disposition', `attachment; filename="${filename}"`);

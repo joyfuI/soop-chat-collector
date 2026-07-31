@@ -1,5 +1,7 @@
 import { css } from '@emotion/react';
 import Box from '@mui/material/Box';
+import { formatDuration, intervalToDuration } from 'date-fns';
+import { ko } from 'date-fns/locale/ko';
 import type { CSSProperties } from 'react';
 
 import { useGetChatTodayLiveQuery } from './hooks/useChatQuery';
@@ -10,6 +12,7 @@ import useStore from './hooks/useStore';
 const TodayLiveOverlay = () => {
   const [streamerId] = useStore('streamerId');
   const [items] = useStore('todayLiveItems');
+  const [startTime] = useStore('todayLiveStartTime');
   const [style] = useStore('todayLiveStyle');
 
   const key = 'today-live';
@@ -19,7 +22,25 @@ const TodayLiveOverlay = () => {
   const { data: playbackData } = useGetOverlayControlQuery(key);
   useOverlaySSE(key);
 
-  const totalDuration = '0시간';
+  const totalDuration = (() => {
+    if (!startTime) {
+      return '0분';
+    }
+
+    const start = new Date(startTime);
+    const end = new Date(playbackData.playedAt);
+    if (end < start) {
+      return '0분';
+    }
+
+    return (
+      formatDuration(intervalToDuration({ start, end }), {
+        format: ['days', 'hours', 'minutes'],
+        zero: false,
+        locale: ko,
+      }) || '0분'
+    );
+  })();
 
   return (
     <Box
@@ -53,7 +74,7 @@ ${style}
                     { '--data-value': data?.totalChat ?? 0 } as CSSProperties
                   }
                 >
-                  {data?.totalChat.toLocaleString() ?? 0}
+                  {data?.totalChat?.toLocaleString() ?? 0}
                 </span>
               </div>
             </div>
@@ -72,7 +93,7 @@ ${style}
                     } as CSSProperties
                   }
                 >
-                  {data?.chatUserCount.toLocaleString() ?? 0}
+                  {data?.chatUserCount?.toLocaleString() ?? 0}
                 </span>
               </div>
             </div>
@@ -91,7 +112,7 @@ ${style}
                     } as CSSProperties
                   }
                 >
-                  {data?.totalDonation.toLocaleString() ?? 0}
+                  {data?.totalDonation?.toLocaleString() ?? 0}
                 </span>
               </div>
             </div>
@@ -110,7 +131,7 @@ ${style}
                     } as CSSProperties
                   }
                 >
-                  {data?.donationUserCount.toLocaleString() ?? 0}
+                  {data?.donationUserCount?.toLocaleString() ?? 0}
                 </span>
               </div>
             </div>
@@ -127,7 +148,7 @@ ${style}
                     { '--data-value': data?.fanClubCount ?? 0 } as CSSProperties
                   }
                 >
-                  {data?.fanClubCount.toLocaleString() ?? 0}
+                  {data?.fanClubCount?.toLocaleString() ?? 0}
                 </span>
               </div>
             </div>
@@ -146,7 +167,7 @@ ${style}
                     } as CSSProperties
                   }
                 >
-                  {data?.subscribeCount.toLocaleString() ?? 0}
+                  {data?.subscribeCount?.toLocaleString() ?? 0}
                 </span>
               </div>
             </div>

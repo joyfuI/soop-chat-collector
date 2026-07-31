@@ -10,6 +10,8 @@ import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { parse } from 'date-fns';
 import type { ChangeEvent } from 'react';
 import { useEffect, useRef } from 'react';
 
@@ -19,7 +21,7 @@ import {
   usePostOverlayControlQuery,
   usePostOverlayRefreshQuery,
 } from './hooks/useOverlayQuery';
-import { useGetSoopStationQuery } from './hooks/useSoopQuery';
+import { useGetSoopQuery, useGetSoopStationQuery } from './hooks/useSoopQuery';
 import useStore from './hooks/useStore';
 import TodayLiveOverlay from './TodayLiveOverlay';
 import copyText from './utils/copyText';
@@ -28,27 +30,51 @@ const TodayLive = () => {
   const [streamerId] = useStore('streamerId');
   const [items, setItems] = useStore('todayLiveItems');
   const [startType, setStartType] = useStore('todayLiveStartType');
+  const [startTime, setStartTime] = useStore('todayLiveStartTime');
   const [style, setStyle] = useStore('todayLiveStyle');
-  const prevOptions = useRef({ items, style });
+  const prevOptions = useRef({ items, startTime, style });
 
   const key = 'today-live';
   const { data } = useGetOverlayControlQuery(key);
   const { mutate } = usePostOverlayControlQuery(key);
   const { mutate: refreshMutate } = usePostOverlayRefreshQuery(key);
-  const { data: stationData } = useGetSoopStationQuery(streamerId);
+  const { data: stationData, refetch: refetchStation } =
+    useGetSoopStationQuery(streamerId);
+  const { data: soopChatData } = useGetSoopQuery();
 
   const url = `${location.origin}/#/${key}`;
 
   useEffect(() => {
     const options = prevOptions.current;
-    const changed = options.items !== items || options.style !== style;
+    const changed =
+      options.items !== items ||
+      options.startTime !== startTime ||
+      options.style !== style;
 
-    prevOptions.current = { items, style };
+    prevOptions.current = { items, startTime, style };
 
     if (changed) {
       refreshMutate();
     }
-  }, [items, style, refreshMutate]);
+  }, [items, startTime, style, refreshMutate]);
+
+  useEffect(() => {
+    if (startType === 'broadStart' && stationData?.station.broad_start) {
+      setStartTime(
+        parse(
+          stationData.station.broad_start,
+          'yyyy-MM-dd HH:mm:ss',
+          new Date(),
+        ).getTime(),
+      );
+    }
+  }, [startType, stationData?.station.broad_start, setStartTime]);
+
+  useEffect(() => {
+    if (startType === 'startedAt' && soopChatData?.startedAt) {
+      setStartTime(soopChatData?.startedAt);
+    }
+  }, [startType, soopChatData?.startedAt, setStartTime]);
 
   const handleCopyClick = () => {
     copyText(url);
@@ -67,7 +93,17 @@ const TodayLive = () => {
   };
 
   const handleStartTypeChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setStartType(e.target.value);
+    const value = e.target.value;
+    if (value === 'broadStart' && streamerId) {
+      refetchStation();
+    }
+    setStartType(value);
+  };
+
+  const handleStartTimeChange = (value: Date | null) => {
+    if (value) {
+      setStartTime(value.getTime());
+    }
   };
 
   const handleStyleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -176,18 +212,18 @@ const TodayLive = () => {
             name="broad-start"
             onChange={handleStartTypeChange}
             row
-            sx={{ display: 'inline-flex' }}
+            sx={{ display: 'inline-flex', verticalAlign: 'middle' }}
             value={startType ?? ''}
           >
             <FormControlLabel
               control={<Radio />}
-              label="방송국 상 마지막 방송 시작 시간"
+              label="방송국 방송 시작 시간"
               value="broadStart"
             />
             <FormControlLabel
               control={<Radio />}
               label="수집 시작 시간"
-              value="startClick"
+              value="startedAt"
             />
             <FormControlLabel
               control={<Radio />}
@@ -195,7 +231,12 @@ const TodayLive = () => {
               value="custom"
             />
           </RadioGroup>
-          <span>{stationData?.station.broad_start}</span>
+          <DateTimePicker
+            disabled={startType !== 'custom'}
+            onChange={handleStartTimeChange}
+            sx={{ verticalAlign: 'middle' }}
+            value={startTime ? new Date(startTime) : null}
+          />
         </FormLabel>
 
         <FormLabel label="커스텀 CSS">

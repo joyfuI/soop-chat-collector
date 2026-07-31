@@ -2,6 +2,7 @@ export type PostOverlayControlBody = { action: 'play' | 'stop' };
 export type PostOverlayControlResponse = {
   revision: number;
   status: 'playing' | 'stopped';
+  playedAt: number;
 };
 
 export type OverlayKey =

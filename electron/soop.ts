@@ -13,7 +13,10 @@ import * as z from 'zod';
 import type { RankChatMessage } from '../shared/types';
 import { broadcast } from './overlay';
 
-const soopChatRef: { current: SoopChat | null } = { current: null };
+const soopChatRef: { current: SoopChat | null; startedAt: number } = {
+  current: null,
+  startedAt: 0,
+};
 
 type TypeResponse =
   | [type: SoopChatEvent.CHAT, response: ChatResponse]
@@ -189,6 +192,7 @@ const routes: FastifyPluginAsyncZod = async (fastify) => {
 
         // Connect to chat
         await soopChat.connect();
+        soopChatRef.startedAt = Date.now();
       } catch {
         console.log('error soopChat');
         soopChatRef.current = null;
@@ -198,7 +202,10 @@ const routes: FastifyPluginAsyncZod = async (fastify) => {
   );
 
   fastify.get('/api/soop', async () => {
-    return !!soopChatRef.current;
+    return {
+      isStarted: !!soopChatRef.current,
+      startedAt: soopChatRef.startedAt,
+    };
   });
 
   fastify.delete('/api/soop', async () => {

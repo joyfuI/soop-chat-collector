@@ -18,11 +18,11 @@ const clients: ClientsType = {
   'today-live': new Set<SSEReplyInterface>(),
 };
 const playback: PlaybackType = {
-  'rank-chat': { revision: 0, status: 'stopped' },
-  'rank-donation': { revision: 0, status: 'stopped' },
-  'new-fan-club': { revision: 0, status: 'stopped' },
-  subscribe: { revision: 0, status: 'stopped' },
-  'today-live': { revision: 0, status: 'stopped' },
+  'rank-chat': { revision: 0, status: 'stopped', playedAt: 0 },
+  'rank-donation': { revision: 0, status: 'stopped', playedAt: 0 },
+  'new-fan-club': { revision: 0, status: 'stopped', playedAt: 0 },
+  subscribe: { revision: 0, status: 'stopped', playedAt: 0 },
+  'today-live': { revision: 0, status: 'stopped', playedAt: 0 },
 };
 
 const toSSEMessage = (state: PostOverlayControlResponse): SSEMessage => ({
@@ -58,6 +58,7 @@ const routes: FastifyPluginAsync = async (fastify) => {
       playback[key] = {
         revision: playback[key].revision + 1,
         status: action === 'play' ? 'playing' : 'stopped',
+        playedAt: action === 'play' ? Date.now() : playback[key].playedAt,
       };
 
       await broadcast(key, toSSEMessage(playback[key]));

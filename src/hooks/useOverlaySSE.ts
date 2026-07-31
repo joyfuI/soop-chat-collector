@@ -36,6 +36,7 @@ const useOverlaySSE = (
   onChat?: (message: RankChatMessage) => void,
 ) => {
   const queryClient = useQueryClient();
+
   const onChatEvent = useEffectEvent((event: Event) => {
     if (!onChat) {
       return;

@@ -27,7 +27,8 @@ export const usePostSoopQuery = () => {
 export const useGetSoopQuery = () => {
   return useQuery({
     queryKey: ['soop'],
-    queryFn: () => fetchJson<boolean>('/api/soop'),
+    queryFn: () =>
+      fetchJson<{ isStarted: boolean; startedAt: number }>('/api/soop'),
   });
 };
 

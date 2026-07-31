@@ -18,6 +18,7 @@ export const storeSchema = z.object({
   subscribeStyle: z.string().default(''),
   todayLiveItems: z.array(z.string()).default([]),
   todayLiveStartType: z.string().default('broadStart'),
+  todayLiveStartTime: z.number().default(Date.now()),
   todayLiveStyle: z.string().default(''),
 });
 

@@ -29,6 +29,7 @@ export const usePostOverlayRefreshQuery = (key: OverlayKey) => {
 const initialData: PostOverlayControlResponse = {
   revision: 0,
   status: 'stopped',
+  playedAt: 0,
 };
 
 export const useGetOverlayControlQuery = (key: OverlayKey) => {

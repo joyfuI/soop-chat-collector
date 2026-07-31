@@ -20,7 +20,7 @@ const Collector = () => {
   const [streamerId, setStreamerId] = useStore('streamerId');
   const [watch, setWatch] = useStore('watch');
 
-  const { data: isStarted } = useGetSoopQuery();
+  const { data } = useGetSoopQuery();
   const { data: detailData } = useGetSoopDetailQuery(
     watch ? streamerId : undefined,
   );
@@ -48,11 +48,11 @@ const Collector = () => {
     if (watch) {
       // RESULT: 정상 1, 미방송 0, 구플 -14, 19금 -6, 비번방 1, 19비번방 -8
       if (detailData?.CHANNEL.RESULT === 1) {
-        if (!isStarted) {
+        if (!data?.isStarted) {
           handleStartClick();
         }
       } else if (detailData?.CHANNEL.RESULT === 0) {
-        if (isStarted) {
+        if (data?.isStarted) {
           handleStopClick();
         }
       }
@@ -60,7 +60,7 @@ const Collector = () => {
   }, [
     watch,
     detailData?.CHANNEL.RESULT,
-    isStarted,
+    data?.isStarted,
     handleStartClick,
     handleStopClick,
   ]);
@@ -90,7 +90,7 @@ const Collector = () => {
       >
         <TextField
           defaultValue={streamerId}
-          disabled={isStarted || watch}
+          disabled={data?.isStarted || watch}
           onChange={handleStreamerIdChange}
           variant="outlined"
         />
@@ -100,7 +100,7 @@ const Collector = () => {
         description={`제약사항) 비번방, 구플방, 19금방은 수집할 수 없습니다.\n방송 감지를 켜면 10초 간격으로 확인하여 자동으로 시작/중지합니다.`}
         label="채팅 수집"
       >
-        {isStarted ? (
+        {data?.isStarted ? (
           <Button
             color="error"
             onClick={handleStopClick}
