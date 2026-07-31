@@ -17,17 +17,15 @@ import {
   usePostOverlayRefreshQuery,
 } from './hooks/useOverlayQuery';
 import useStore from './hooks/useStore';
-import RankDonationOverlay from './RankDonationOverlay';
+import NewFanClubOverlay from './NewFanClubOverlay';
 import copyText from './utils/copyText';
 
-const RankDonation = () => {
-  const [limit, setLimit] = useStore('rankDonationLimit');
-  const [viewCount, setViewCount] = useStore('rankDonationViewCount');
-  const [viewLastChat, setViewLastChat] = useStore('rankDonationViewLastChat');
-  const [style, setStyle] = useStore('rankDonationStyle');
-  const prevOptions = useRef({ limit, viewCount, viewLastChat, style });
+const NewFanClub = () => {
+  const [viewLastChat, setViewLastChat] = useStore('newFanClubViewLastChat');
+  const [style, setStyle] = useStore('newFanClubStyle');
+  const prevOptions = useRef({ viewLastChat, style });
 
-  const key = 'rank-donation';
+  const key = 'new-fan-club';
   const { data } = useGetOverlayControlQuery(key);
   const { mutate } = usePostOverlayControlQuery(key);
   const { mutate: refreshMutate } = usePostOverlayRefreshQuery(key);
@@ -37,28 +35,17 @@ const RankDonation = () => {
   useEffect(() => {
     const options = prevOptions.current;
     const changed =
-      options.limit !== limit ||
-      options.viewCount !== viewCount ||
-      options.viewLastChat !== viewLastChat ||
-      options.style !== style;
+      options.viewLastChat !== viewLastChat || options.style !== style;
 
-    prevOptions.current = { limit, viewCount, viewLastChat, style };
+    prevOptions.current = { viewLastChat, style };
 
     if (changed) {
       refreshMutate();
     }
-  }, [limit, viewCount, viewLastChat, style, refreshMutate]);
+  }, [viewLastChat, style, refreshMutate]);
 
   const handleCopyClick = () => {
     copyText(url);
-  };
-
-  const handleLimitChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setLimit(parseInt(e.target.value, 10));
-  };
-
-  const handleViewCountChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setViewCount(e.target.checked);
   };
 
   const handleViewLastChatChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -81,8 +68,8 @@ const RankDonation = () => {
     <Box sx={{ position: 'relative' }}>
       <Stack spacing={2}>
         <Alert severity="info">
-          별풍선, 영상풍선, 애드벌룬만 집계됩니다. 도전미션, 대결미션은 (아마도)
-          집계되지 않습니다.
+          별풍선, 영상풍선, 애드벌룬으로 한 팬가입만 집계됩니다. 도전미션,
+          대결미션으로 한 팬가입은 (아마도) 집계되지 않습니다.
         </Alert>
 
         <FormLabel label="오버레이 URL">
@@ -94,26 +81,6 @@ const RankDonation = () => {
 
         <FormLabel label="옵션">
           <Stack direction="row" spacing={4}>
-            <TextField
-              defaultValue={limit}
-              label="순위 개수"
-              onChange={handleLimitChange}
-              slotProps={{
-                input: { inputProps: { min: 1, inputMode: 'numeric' } },
-                inputLabel: { shrink: true },
-              }}
-              type="number"
-              variant="outlined"
-            />
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={viewCount ?? false}
-                  onChange={handleViewCountChange}
-                />
-              }
-              label="별풍선 개수 보이기"
-            />
             <FormControlLabel
               control={
                 <Switch
@@ -170,7 +137,7 @@ const RankDonation = () => {
               overflowX: 'auto',
             }}
           >
-            <RankDonationOverlay />
+            <NewFanClubOverlay />
           </Box>
         </FormLabel>
       </Stack>
@@ -178,4 +145,4 @@ const RankDonation = () => {
   );
 };
 
-export default RankDonation;
+export default NewFanClub;

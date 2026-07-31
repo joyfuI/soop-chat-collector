@@ -78,6 +78,23 @@ LIMIT :limit;
     },
   );
 
+  fastify.get(
+    '/api/chat/new-fan-club',
+    { schema: { querystring: z.object({ streamerId: z.coerce.string() }) } },
+    async (request) => {
+      const { streamerId } = request.query;
+      return fastify.sqlite.all<Record<string, string>>(
+        `
+SELECT receivedTime, userId, username, CAST(value AS INTEGER) AS fanClubOrdinal
+FROM chat
+WHERE streamerId = :streamerId AND type = 'fanClub'
+ORDER BY receivedTime, userId;
+`,
+        { streamerId },
+      );
+    },
+  );
+
   fastify.delete('/api/chat', async () => {
     fastify.sqlite.run('DELETE FROM chat;');
   });

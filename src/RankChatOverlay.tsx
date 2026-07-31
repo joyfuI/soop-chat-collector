@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import Box from '@mui/material/Box';
+import type { CSSProperties } from 'react';
 
 import { useGetChatRankChatQuery } from './hooks/useChatQuery';
 import useLastChats from './hooks/useLastChats';
@@ -46,19 +47,35 @@ ${style}
           <div className="extra extra-4" />
           <div className="extra extra-5" />
         </div>
-        <div className="items">
+        <div
+          className="items"
+          data-count={data?.length ?? 0}
+          style={{ '--data-count': data?.length ?? 0 } as CSSProperties}
+        >
           {data?.map((item) => (
             <div className="item" key={item.userId}>
               <div className="image" />
               <div className="text">
-                <span className="rank" data-value={item.rank}>
+                <span
+                  className="rank"
+                  data-value={item.rank}
+                  style={{ '--data-value': item.rank } as CSSProperties}
+                >
                   {item.rank}
                 </span>
-                <span className="username" data-value={item.username}>
+                <span
+                  className="username"
+                  data-value={item.username}
+                  style={{ '--data-value': item.username } as CSSProperties}
+                >
                   {item.username}
                 </span>
                 {viewCount ? (
-                  <span className="chat-count" data-value={item.chatCount}>
+                  <span
+                    className="chat-count"
+                    data-value={item.chatCount}
+                    style={{ '--data-value': item.chatCount } as CSSProperties}
+                  >
                     {item.chatCount}
                   </span>
                 ) : null}
@@ -66,6 +83,11 @@ ${style}
                   <span
                     className="last-chat"
                     data-value={lastChats[item.userId] ?? ''}
+                    style={
+                      {
+                        '--data-value': lastChats[item.userId] ?? '',
+                      } as CSSProperties
+                    }
                   >
                     {lastChats[item.userId]}
                   </span>

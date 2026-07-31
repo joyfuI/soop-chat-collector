@@ -2,24 +2,20 @@ import { css } from '@emotion/react';
 import Box from '@mui/material/Box';
 import type { CSSProperties } from 'react';
 
-import { useGetChatRankDonationQuery } from './hooks/useChatQuery';
+import { useGetChatNewFanClubQuery } from './hooks/useChatQuery';
 import useLastChats from './hooks/useLastChats';
 import { useGetOverlayControlQuery } from './hooks/useOverlayQuery';
 import useOverlaySSE from './hooks/useOverlaySSE';
 import useStore from './hooks/useStore';
 
-const RankDonationOverlay = () => {
+const NewFanClubOverlay = () => {
   const [streamerId] = useStore('streamerId');
-  const [limit] = useStore('rankDonationLimit');
-  const [viewCount] = useStore('rankDonationViewCount');
-  const [viewLastChat] = useStore('rankDonationViewLastChat');
-  const [style] = useStore('rankDonationStyle');
+  const [viewLastChat] = useStore('newFanClubViewLastChat');
+  const [style] = useStore('newFanClubStyle');
 
-  const key = 'rank-donation';
-  const { data } = useGetChatRankDonationQuery(
-    streamerId !== undefined && limit !== undefined
-      ? { streamerId, limit }
-      : undefined,
+  const key = 'new-fan-club';
+  const { data } = useGetChatNewFanClubQuery(
+    streamerId !== undefined ? { streamerId } : undefined,
   );
   const { data: playbackData } = useGetOverlayControlQuery(key);
   const { lastChats, handleChat } = useLastChats(
@@ -57,30 +53,12 @@ ${style}
               <div className="image" />
               <div className="text">
                 <span
-                  className="rank"
-                  data-value={item.rank}
-                  style={{ '--data-value': item.rank } as CSSProperties}
-                >
-                  {item.rank}
-                </span>
-                <span
                   className="username"
                   data-value={item.username}
                   style={{ '--data-value': item.username } as CSSProperties}
                 >
                   {item.username}
                 </span>
-                {viewCount ? (
-                  <span
-                    className="total-donation"
-                    data-value={item.totalDonation}
-                    style={
-                      { '--data-value': item.totalDonation } as CSSProperties
-                    }
-                  >
-                    {item.totalDonation}
-                  </span>
-                ) : null}
                 {viewLastChat ? (
                   <span
                     className="last-chat"
@@ -103,4 +81,4 @@ ${style}
   );
 };
 
-export default RankDonationOverlay;
+export default NewFanClubOverlay;

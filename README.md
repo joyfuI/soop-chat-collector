@@ -63,10 +63,9 @@ VITE_API_PORT=3000
 3. `수집 시작` 버튼을 눌러 채팅 수집을 시작합니다.
    - 버튼을 누른 순간부터 수집이 시작되니 정확한 순위를 위해서는 방송 시작하자마자 수집을 시작해야 합니다.
    - `방송 감지`를 켜두면 10초 간격으로 확인하여 자동으로 시작/중지합니다.
-4. `채팅 순위` 탭에서 오버레이 URL을 복사해 OBS 또는 프릭샷의 브라우저 소스에 추가합니다.
-5. `별풍선 순위` 탭에서 오버레이 URL을 복사해 OBS 또는 프릭샷의 브라우저 소스에 추가합니다.
-6. 각 탭에서 `재생` 버튼을 누르면 데이터가 갱신되고 CSS 애니메이션이 재생됩니다.
-7. 수집된 데이터는 앱 재실행 후에도 남아 있으니 새로 시작하고 싶다면 `수집` 탭에서 `수집 데이터 초기화` 버튼을 눌러야 합니다.
+4. 각 탭에서 오버레이 URL을 복사해 OBS 또는 프릭샷의 브라우저 소스에 추가합니다.
+5. 각 탭에서 `재생` 버튼을 누르면 데이터가 갱신되고 CSS 애니메이션이 재생됩니다.
+6. 수집된 데이터는 앱 재실행 후에도 남아 있으니 새로 시작하고 싶다면 `수집` 탭에서 `수집 데이터 초기화` 버튼을 눌러야 합니다.
 
 ### 채팅 순위
 
@@ -79,14 +78,14 @@ VITE_API_PORT=3000
     <div class="extra extra-4"></div>
     <div class="extra extra-5"></div>
   </div>
-  <div class="items">
+  <div class="items" data-count="item개수" style="--data-count: item개수;">
     <div class="item">
       <div class="image"></div>
       <div class="text">
-        <span class="rank" data-value="1">1</span>
-        <span class="username" data-value="닉네임">닉네임</span>
-        <span class="chat-count" data-value="채팅수">채팅수</span>
-        <span class="last-chat" data-value="마지막채팅">마지막채팅</span>
+        <span class="rank" data-value="1" style="--data-value: 1;">1</span>
+        <span class="username" data-value="닉네임" style="--data-value: 닉네임;">닉네임</span>
+        <span class="chat-count" data-value="채팅수" style="--data-value: 채팅수;">채팅수</span>
+        <span class="last-chat" data-value="마지막채팅" style="--data-value: 마지막채팅;">마지막채팅</span>
       </div>
     </div>
     ...
@@ -98,6 +97,7 @@ VITE_API_PORT=3000
 - `채팅 개수 보이기`가 off 상태면 span.chat-count가 렌더링 되지 않습니다.
 - `마지막 채팅 보이기`가 off 상태면 span.last-chat이 렌더링 되지 않습니다.
 - 만약 `커스텀 CSS`에서 애니메이션을 설정했다면 `재생/정지`에서 `재생` 버튼을 눌러야 CSS 애니메이션이 재생됩니다.
+- CSS attr()를 사용해 값을 읽을 수 있도록 `data-*` 속성을 추가햇으나, 아직 attr()을 지원하지 않는 브라우저를 위해 CSS 변수도 추가했습니다.
 
 ### 별풍선 순위
 
@@ -110,14 +110,14 @@ VITE_API_PORT=3000
     <div class="extra extra-4"></div>
     <div class="extra extra-5"></div>
   </div>
-  <div class="items">
+  <div class="items" data-count="item개수" style="--data-count: item개수;">
     <div class="item">
       <div class="image"></div>
       <div class="text">
-        <span class="rank" data-value="1">1</span>
-        <span class="username" data-value="닉네임">닉네임</span>
-        <span class="total-donation" data-value="별풍선수">별풍선수</span>
-        <span class="last-chat" data-value="마지막채팅">마지막채팅</span>
+        <span class="rank" data-value="1" style="--data-value: 1;">1</span>
+        <span class="username" data-value="닉네임" style="--data-value: 닉네임;">닉네임</span>
+        <span class="total-donation" data-value="별풍선수" style="--data-value: 별풍선수;">별풍선수</span>
+        <span class="last-chat" data-value="마지막채팅" style="--data-value: 마지막채팅;">마지막채팅</span>
       </div>
     </div>
     ...
@@ -129,6 +129,36 @@ VITE_API_PORT=3000
 - `별풍선 개수 보이기`가 off 상태면 span.total-donation이 렌더링 되지 않습니다.
 - `마지막 채팅 보이기`가 off 상태면 span.last-chat이 렌더링 되지 않습니다.
 - 만약 `커스텀 CSS`에서 애니메이션을 설정했다면 `재생/정지`에서 `재생` 버튼을 눌러야 CSS 애니메이션이 재생됩니다.
+- CSS attr()를 사용해 값을 읽을 수 있도록 `data-*` 속성을 추가햇으나, 아직 attr()을 지원하지 않는 브라우저를 위해 CSS 변수도 추가했습니다.
+
+### 신규 팬가입
+
+```html
+<div class="root root-new-fan-club">
+  <div class="extras">
+    <div class="extra extra-1"></div>
+    <div class="extra extra-2"></div>
+    <div class="extra extra-3"></div>
+    <div class="extra extra-4"></div>
+    <div class="extra extra-5"></div>
+  </div>
+  <div class="items" data-count="item개수" style="--data-count: item개수;">
+    <div class="item">
+      <div class="image"></div>
+      <div class="text">
+        <span class="username" data-value="닉네임" style="--data-value: 닉네임;">닉네임</span>
+        <span class="last-chat" data-value="마지막채팅" style="--data-value: 마지막채팅;">마지막채팅</span>
+      </div>
+    </div>
+    ...
+  </div>
+</div>
+```
+- 신규 팬가입의 DOM 구조는 위와 같은 형태입니다.
+- `커스텀 CSS`로 자유롭게 스타일 지정이 가능합니다.
+- `마지막 채팅 보이기`가 off 상태면 span.last-chat이 렌더링 되지 않습니다.
+- 만약 `커스텀 CSS`에서 애니메이션을 설정했다면 `재생/정지`에서 `재생` 버튼을 눌러야 CSS 애니메이션이 재생됩니다.
+- CSS attr()를 사용해 값을 읽을 수 있도록 `data-*` 속성을 추가햇으나, 아직 attr()을 지원하지 않는 브라우저를 위해 CSS 변수도 추가했습니다.
 
 ## 프로젝트 구조
 

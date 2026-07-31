@@ -4,6 +4,7 @@ import type { SyntheticEvent } from 'react';
 import Collector from './Collector';
 import Navigation from './components/Navigation';
 import useStore from './hooks/useStore';
+import NewFanClub from './NewFanClub';
 import RankChat from './RankChat';
 import RankDonation from './RankDonation';
 
@@ -20,6 +21,7 @@ const App = () => {
         <Collector />
         <RankChat />
         <RankDonation />
+        <NewFanClub />
       </Navigation>
     </Container>
   );

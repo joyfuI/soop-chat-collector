@@ -4,7 +4,7 @@ export type PostOverlayControlResponse = {
   status: 'playing' | 'stopped';
 };
 
-export type OverlayKey = 'rank-chat' | 'rank-donation';
+export type OverlayKey = 'rank-chat' | 'rank-donation' | 'new-fan-club';
 
 export type RankChatMessage = {
   streamerId: string;
