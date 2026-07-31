@@ -112,6 +112,28 @@ ORDER BY receivedTime, id;
     },
   );
 
+  fastify.get(
+    '/api/chat/today-live',
+    { schema: { querystring: z.object({ streamerId: z.coerce.string() }) } },
+    async (request) => {
+      const { streamerId } = request.query;
+      return fastify.sqlite.get<Record<string, string>>(
+        `
+SELECT
+  COUNT(CASE WHEN type IN ('chat', 'emoticon') THEN 1 END) AS totalChat,
+  COUNT(DISTINCT CASE WHEN type IN ('chat', 'emoticon') THEN userId END) AS chatUserCount,
+  SUM(CASE WHEN type IN ('textDonation', 'videoDonation', 'adBalloonDonation') THEN CAST(value AS INTEGER) ELSE 0 END) AS totalDonation,
+  COUNT(DISTINCT CASE WHEN type IN ('textDonation', 'videoDonation', 'adBalloonDonation') THEN userId END) AS donationUserCount,
+  COUNT(CASE WHEN type = 'fanClub' THEN 1 END) AS fanClubCount,
+  COUNT(CASE WHEN type = 'subscribe' THEN 1 END) AS subscribeCount
+FROM chat
+WHERE streamerId = :streamerId;
+`,
+        { streamerId },
+      );
+    },
+  );
+
   fastify.delete('/api/chat', async () => {
     fastify.sqlite.run('DELETE FROM chat;');
   });

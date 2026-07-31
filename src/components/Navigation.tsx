@@ -3,6 +3,7 @@ import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import StarsIcon from '@mui/icons-material/Stars';
+import SummarizeIcon from '@mui/icons-material/Summarize';
 import type { BottomNavigationProps } from '@mui/material/BottomNavigation';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
@@ -38,6 +39,7 @@ const Navigation = ({ children, value, onChange }: NavigationProps) => {
           <BottomNavigationAction icon={<StarsIcon />} label="별풍선 순위" />
           <BottomNavigationAction icon={<PersonAddAlt1Icon />} label="팬가입" />
           <BottomNavigationAction icon={<GroupAddIcon />} label="구독" />
+          <BottomNavigationAction icon={<SummarizeIcon />} label="방송 요약" />
         </BottomNavigation>
       </Paper>
     </>

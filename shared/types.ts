@@ -8,7 +8,8 @@ export type OverlayKey =
   | 'rank-chat'
   | 'rank-donation'
   | 'new-fan-club'
-  | 'subscribe';
+  | 'subscribe'
+  | 'today-live';
 
 export type RankChatMessage = {
   streamerId: string;

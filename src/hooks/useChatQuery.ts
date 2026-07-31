@@ -83,6 +83,23 @@ export const useGetChatSubscribeQuery = (params?: { streamerId?: string }) => {
   });
 };
 
+export const useGetChatTodayLiveQuery = (params?: { streamerId?: string }) => {
+  return useQuery({
+    queryKey: ['chat', 'today-live', params],
+    queryFn: params?.streamerId
+      ? () =>
+          fetchJson<{
+            totalChat: number;
+            chatUserCount: number;
+            totalDonation: number;
+            donationUserCount: number;
+            fanClubCount: number;
+            subscribeCount: number;
+          }>(`/api/chat/today-live?${objectToQueryString(params)}`)
+      : skipToken,
+  });
+};
+
 export const useDeleteChatQuery = () => {
   const queryClient = useQueryClient();
   return useMutation({

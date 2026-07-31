@@ -8,6 +8,7 @@ import NewFanClub from './NewFanClub';
 import RankChat from './RankChat';
 import RankDonation from './RankDonation';
 import Subscribe from './Subscribe';
+import TodayLive from './TodayLive';
 
 const App = () => {
   const [tab, setTab] = useStore('tab');
@@ -24,6 +25,7 @@ const App = () => {
         <RankDonation />
         <NewFanClub />
         <Subscribe />
+        <TodayLive />
       </Navigation>
     </Container>
   );

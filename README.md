@@ -190,6 +190,76 @@ VITE_API_PORT=3000
 - CSS attr()를 사용해 값을 읽을 수 있도록 `data-*` 속성을 추가했으나, 아직 attr()을 지원하지 않는 브라우저를 위해 CSS 변수도 추가했습니다.
 - 구독티어 값은 `1`은 베이직 구독, `2`는 플러스 구독입니다.
 
+### 방송 요약
+
+```html
+<div class="root root-today-live">
+  <div class="extras">
+    <div class="extra extra-1" />
+    <div class="extra extra-2" />
+    <div class="extra extra-3" />
+    <div class="extra extra-4" />
+    <div class="extra extra-5" />
+  </div>
+  <div class="items">
+    <div class="item item-total-chat">
+      <div class="image" />
+      <div class="text">
+        <span class="title">총 채팅</span>
+        <span class="value" data-value="0" style="--data-value: 0;">0</span>
+      </div>
+    </div>
+    <div class="item item-chat-user-count">
+      <div class="image" />
+      <div class="text">
+        <span class="title">채팅 인원</span>
+        <span class="value" data-value="0" style="--data-value: 0;">0</span>
+      </div>
+    </div>
+    <div class="item item-total-donation">
+      <div class="image" />
+      <div class="text">
+        <span class="title">총 별풍선</span>
+        <span class="value" data-value="0" style="--data-value: 0;">0</span>
+      </div>
+    </div>
+    <div class="item item-donation-user-count">
+      <div class="image" />
+      <div class="text">
+        <span class="title">별풍선 인원</span>
+        <span class="value" data-value="0" style="--data-value: 0;">0</span>
+      </div>
+    </div>
+    <div class="item item-fan-club-count">
+      <div class="image" />
+      <div class="text">
+        <span class="title">팬가입</span>
+        <span class="value" data-value="0" style="--data-value: 0;">0</span>
+      </div>
+    </div>
+    <div class="item item-subscribe-count">
+      <div class="image" />
+      <div class="text">
+        <span class="title">구독</span>
+        <span class="value" data-value="0" style="--data-value: 0;">0</span>
+      </div>
+    </div>
+    <div class="item item-total-duration">
+      <div class="image" />
+      <div class="text">
+        <span class="title">방송 시간</span>
+        <span class="value" data-value="0분" style="--data-value: 0분;">0분</span>
+      </div>
+    </div>
+  </div>
+</div>
+```
+- 방송 요약의 DOM 구조는 위와 같은 형태입니다.
+- `커스텀 CSS`로 자유롭게 스타일 지정이 가능합니다.
+- 각 항목이 off 상태면 해당 div.item이 렌더링 되지 않습니다.
+- 만약 `커스텀 CSS`에서 애니메이션을 설정했다면 `재생/정지`에서 `재생` 버튼을 눌러야 CSS 애니메이션이 재생됩니다.
+- CSS attr()를 사용해 값을 읽을 수 있도록 `data-*` 속성을 추가했으나, 아직 attr()을 지원하지 않는 브라우저를 위해 CSS 변수도 추가했습니다.
+
 ## 프로젝트 구조
 
 ```text

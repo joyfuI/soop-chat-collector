@@ -49,12 +49,7 @@ ${style}
           style={{ '--data-count': data?.length ?? 0 } as CSSProperties}
         >
           {data?.map((item) => (
-            <div
-              className="item"
-              data-tier={item.tier}
-              key={item.userId}
-              style={{ '--data-tier': item.tier } as CSSProperties}
-            >
+            <div className="item" data-tier={item.tier} key={item.userId}>
               <div className="image" />
               <div className="text">
                 <span

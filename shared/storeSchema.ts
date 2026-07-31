@@ -16,6 +16,9 @@ export const storeSchema = z.object({
   newFanClubStyle: z.string().default(''),
   subscribeViewLastChat: z.boolean().default(false),
   subscribeStyle: z.string().default(''),
+  todayLiveItems: z.array(z.string()).default([]),
+  todayLiveStartType: z.string().default('broadStart'),
+  todayLiveStyle: z.string().default(''),
 });
 
 export type StoreType = z.output<typeof storeSchema>;
