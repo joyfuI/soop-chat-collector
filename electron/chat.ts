@@ -88,7 +88,24 @@ LIMIT :limit;
 SELECT receivedTime, userId, username, CAST(value AS INTEGER) AS fanClubOrdinal
 FROM chat
 WHERE streamerId = :streamerId AND type = 'fanClub'
-ORDER BY receivedTime, userId;
+ORDER BY receivedTime, id;
+`,
+        { streamerId },
+      );
+    },
+  );
+
+  fastify.get(
+    '/api/chat/subscribe',
+    { schema: { querystring: z.object({ streamerId: z.coerce.string() }) } },
+    async (request) => {
+      const { streamerId } = request.query;
+      return fastify.sqlite.all<Record<string, string>>(
+        `
+SELECT receivedTime, userId, username, CAST(substr(value, instr(value, '|') + 1) AS INTEGER) AS tier
+FROM chat
+WHERE streamerId = :streamerId AND type = 'subscribe'
+ORDER BY receivedTime, id;
 `,
         { streamerId },
       );

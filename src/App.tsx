@@ -7,6 +7,7 @@ import useStore from './hooks/useStore';
 import NewFanClub from './NewFanClub';
 import RankChat from './RankChat';
 import RankDonation from './RankDonation';
+import Subscribe from './Subscribe';
 
 const App = () => {
   const [tab, setTab] = useStore('tab');
@@ -22,6 +23,7 @@ const App = () => {
         <RankChat />
         <RankDonation />
         <NewFanClub />
+        <Subscribe />
       </Navigation>
     </Container>
   );

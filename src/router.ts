@@ -4,6 +4,7 @@ import App from './App';
 import NewFanClubOverlay from './NewFanClubOverlay';
 import RankChatOverlay from './RankChatOverlay';
 import RankDonationOverlay from './RankDonationOverlay';
+import SubscribeOverlay from './SubscribeOverlay';
 
 export const createAppRouter = () =>
   createHashRouter([
@@ -11,4 +12,5 @@ export const createAppRouter = () =>
     { path: '/rank-chat', Component: RankChatOverlay },
     { path: '/rank-donation', Component: RankDonationOverlay },
     { path: '/new-fan-club', Component: NewFanClubOverlay },
+    { path: '/subscribe', Component: SubscribeOverlay },
   ]);

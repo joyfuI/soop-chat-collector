@@ -1,4 +1,5 @@
 import ChatIcon from '@mui/icons-material/Chat';
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import StarsIcon from '@mui/icons-material/Stars';
@@ -35,10 +36,8 @@ const Navigation = ({ children, value, onChange }: NavigationProps) => {
           <BottomNavigationAction icon={<LibraryBooksIcon />} label="수집" />
           <BottomNavigationAction icon={<ChatIcon />} label="채팅 순위" />
           <BottomNavigationAction icon={<StarsIcon />} label="별풍선 순위" />
-          <BottomNavigationAction
-            icon={<PersonAddAlt1Icon />}
-            label="신규 팬가입"
-          />
+          <BottomNavigationAction icon={<PersonAddAlt1Icon />} label="팬가입" />
+          <BottomNavigationAction icon={<GroupAddIcon />} label="구독" />
         </BottomNavigation>
       </Paper>
     </>

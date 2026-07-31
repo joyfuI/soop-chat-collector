@@ -14,11 +14,13 @@ const clients: ClientsType = {
   'rank-chat': new Set<SSEReplyInterface>(),
   'rank-donation': new Set<SSEReplyInterface>(),
   'new-fan-club': new Set<SSEReplyInterface>(),
+  subscribe: new Set<SSEReplyInterface>(),
 };
 const playback: PlaybackType = {
   'rank-chat': { revision: 0, status: 'stopped' },
   'rank-donation': { revision: 0, status: 'stopped' },
   'new-fan-club': { revision: 0, status: 'stopped' },
+  subscribe: { revision: 0, status: 'stopped' },
 };
 
 const toSSEMessage = (state: PostOverlayControlResponse): SSEMessage => ({

@@ -91,6 +91,8 @@ VALUES (:streamerId, :type, :receivedTime, :username, :userId, :value);
     } satisfies RankChatMessage;
     broadcast('rank-chat', { event: 'chat', data: message });
     broadcast('rank-donation', { event: 'chat', data: message });
+    broadcast('new-fan-club', { event: 'chat', data: message });
+    broadcast('subscribe', { event: 'chat', data: message });
   }
   if (
     (type === SoopChatEvent.TEXT_DONATION ||

@@ -14,6 +14,8 @@ export const storeSchema = z.object({
   rankDonationStyle: z.string().default(''),
   newFanClubViewLastChat: z.boolean().default(false),
   newFanClubStyle: z.string().default(''),
+  subscribeViewLastChat: z.boolean().default(false),
+  subscribeStyle: z.string().default(''),
 });
 
 export type StoreType = z.output<typeof storeSchema>;

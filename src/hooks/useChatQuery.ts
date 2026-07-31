@@ -66,6 +66,23 @@ export const useGetChatNewFanClubQuery = (params?: { streamerId?: string }) => {
   });
 };
 
+export const useGetChatSubscribeQuery = (params?: { streamerId?: string }) => {
+  return useQuery({
+    queryKey: ['chat', 'subscribe', params],
+    queryFn: params?.streamerId
+      ? () =>
+          fetchJson<
+            {
+              receivedTime: string;
+              userId: string;
+              username: string;
+              tier: number;
+            }[]
+          >(`/api/chat/subscribe?${objectToQueryString(params)}`)
+      : skipToken,
+  });
+};
+
 export const useDeleteChatQuery = () => {
   const queryClient = useQueryClient();
   return useMutation({
