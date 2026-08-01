@@ -13,14 +13,14 @@ import TextField from '@mui/material/TextField';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { parse } from 'date-fns';
 import type { ChangeEvent } from 'react';
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 
 import FormLabel from './components/FormLabel';
 import {
   useGetOverlayControlQuery,
   usePostOverlayControlQuery,
-  usePostOverlayRefreshQuery,
 } from './hooks/useOverlayQuery';
+import useRefreshOnChange from './hooks/useRefreshOnChange';
 import { useGetSoopQuery, useGetSoopStationQuery } from './hooks/useSoopQuery';
 import useStore from './hooks/useStore';
 import TodayLiveOverlay from './TodayLiveOverlay';
@@ -32,31 +32,17 @@ const TodayLive = () => {
   const [startType, setStartType] = useStore('todayLiveStartType');
   const [startTime, setStartTime] = useStore('todayLiveStartTime');
   const [style, setStyle] = useStore('todayLiveStyle');
-  const prevOptions = useRef({ items, startTime, style });
 
   const key = 'today-live';
   const { data } = useGetOverlayControlQuery(key);
   const { mutate } = usePostOverlayControlQuery(key);
-  const { mutate: refreshMutate } = usePostOverlayRefreshQuery(key);
   const { data: stationData, refetch: refetchStation } =
     useGetSoopStationQuery(streamerId);
   const { data: soopChatData } = useGetSoopQuery();
 
   const url = `${location.origin}/#/${key}`;
 
-  useEffect(() => {
-    const options = prevOptions.current;
-    const changed =
-      options.items !== items ||
-      options.startTime !== startTime ||
-      options.style !== style;
-
-    prevOptions.current = { items, startTime, style };
-
-    if (changed) {
-      refreshMutate();
-    }
-  }, [items, startTime, style, refreshMutate]);
+  useRefreshOnChange(key, items, startTime, style);
 
   useEffect(() => {
     if (startType === 'broadStart' && stationData?.station.broad_start) {

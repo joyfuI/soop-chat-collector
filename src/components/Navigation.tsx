@@ -22,11 +22,9 @@ const Navigation = ({ children, value, onChange }: NavigationProps) => {
   return (
     <>
       <Box sx={{ pb: 7 }}>
-        {Children.map(children, (child, index) => (
-          <div hidden={value !== index} role="tabpanel">
-            {child}
-          </div>
-        ))}
+        {Children.map(children, (child, index) =>
+          value === index ? child : null,
+        )}
       </Box>
 
       <Paper

@@ -7,14 +7,13 @@ import Stack from '@mui/material/Stack';
 import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
 import type { ChangeEvent } from 'react';
-import { useEffect, useRef } from 'react';
 
 import FormLabel from './components/FormLabel';
 import {
   useGetOverlayControlQuery,
   usePostOverlayControlQuery,
-  usePostOverlayRefreshQuery,
 } from './hooks/useOverlayQuery';
+import useRefreshOnChange from './hooks/useRefreshOnChange';
 import useStore from './hooks/useStore';
 import RankChatOverlay from './RankChatOverlay';
 import copyText from './utils/copyText';
@@ -24,29 +23,14 @@ const RankChat = () => {
   const [viewCount, setViewCount] = useStore('rankChatViewCount');
   const [viewLastChat, setViewLastChat] = useStore('rankChatViewLastChat');
   const [style, setStyle] = useStore('rankChatStyle');
-  const prevOptions = useRef({ limit, viewCount, viewLastChat, style });
 
   const key = 'rank-chat';
   const { data } = useGetOverlayControlQuery(key);
   const { mutate } = usePostOverlayControlQuery(key);
-  const { mutate: refreshMutate } = usePostOverlayRefreshQuery(key);
 
   const url = `${location.origin}/#/${key}`;
 
-  useEffect(() => {
-    const options = prevOptions.current;
-    const changed =
-      options.limit !== limit ||
-      options.viewCount !== viewCount ||
-      options.viewLastChat !== viewLastChat ||
-      options.style !== style;
-
-    prevOptions.current = { limit, viewCount, viewLastChat, style };
-
-    if (changed) {
-      refreshMutate();
-    }
-  }, [limit, viewCount, viewLastChat, style, refreshMutate]);
+  useRefreshOnChange(key, limit, viewCount, viewLastChat, style);
 
   const handleCopyClick = () => {
     copyText(url);

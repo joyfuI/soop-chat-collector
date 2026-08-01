@@ -8,14 +8,13 @@ import Stack from '@mui/material/Stack';
 import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
 import type { ChangeEvent } from 'react';
-import { useEffect, useRef } from 'react';
 
 import FormLabel from './components/FormLabel';
 import {
   useGetOverlayControlQuery,
   usePostOverlayControlQuery,
-  usePostOverlayRefreshQuery,
 } from './hooks/useOverlayQuery';
+import useRefreshOnChange from './hooks/useRefreshOnChange';
 import useStore from './hooks/useStore';
 import NewFanClubOverlay from './NewFanClubOverlay';
 import copyText from './utils/copyText';
@@ -23,26 +22,14 @@ import copyText from './utils/copyText';
 const NewFanClub = () => {
   const [viewLastChat, setViewLastChat] = useStore('newFanClubViewLastChat');
   const [style, setStyle] = useStore('newFanClubStyle');
-  const prevOptions = useRef({ viewLastChat, style });
 
   const key = 'new-fan-club';
   const { data } = useGetOverlayControlQuery(key);
   const { mutate } = usePostOverlayControlQuery(key);
-  const { mutate: refreshMutate } = usePostOverlayRefreshQuery(key);
 
   const url = `${location.origin}/#/${key}`;
 
-  useEffect(() => {
-    const options = prevOptions.current;
-    const changed =
-      options.viewLastChat !== viewLastChat || options.style !== style;
-
-    prevOptions.current = { viewLastChat, style };
-
-    if (changed) {
-      refreshMutate();
-    }
-  }, [viewLastChat, style, refreshMutate]);
+  useRefreshOnChange(key, viewLastChat, style);
 
   const handleCopyClick = () => {
     copyText(url);
