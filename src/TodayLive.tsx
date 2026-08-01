@@ -219,6 +219,7 @@ const TodayLive = () => {
           </RadioGroup>
           <DateTimePicker
             disabled={startType !== 'custom'}
+            disableFuture
             onChange={handleStartTimeChange}
             sx={{ verticalAlign: 'middle' }}
             value={startTime ? new Date(startTime) : null}
