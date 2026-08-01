@@ -59,8 +59,13 @@ WHERE type IN ('chat', 'emoticon');
 `);
       db.exec(`
 CREATE INDEX IF NOT EXISTS idx_donation_rank_user_latest
-ON chat (streamerId, userId, receivedTime DESC, id DESC)
+ON chat (streamerId, userId, receivedTime DESC, id DESC, value)
 WHERE type IN ('textDonation', 'videoDonation', 'adBalloonDonation');
+`);
+      db.exec(`
+CREATE INDEX IF NOT EXISTS idx_chat_event_chronological
+ON chat (streamerId, type, receivedTime, id)
+WHERE type = 'fanClub' OR type = 'subscribe';
 `);
     },
   });
